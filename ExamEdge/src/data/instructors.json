@@ -1,0 +1,72 @@
+[
+  {
+    "id": "inst1",
+    "name": "Dr. A. Kumar",
+    "experience": "15+ Years",
+    "students": "80,000+",
+    "expertise": "JEE Advanced & Physics"
+  },
+  {
+    "id": "inst2",
+    "name": "Prof. R. Sharma",
+    "experience": "10+ Years",
+    "students": "40,000+",
+    "expertise": "Mathematics & Aptitude"
+  },
+  {
+    "id": "inst3",
+    "name": "IIT Faculty Panel",
+    "experience": "20+ Years",
+    "students": "1,00,000+",
+    "expertise": "IIT Level Exams"
+  },
+  {
+    "id": "inst4",
+    "name": "Dr. P. Mehta",
+    "experience": "14+ Years",
+    "students": "60,000+",
+    "expertise": "NEET & Medical Sciences"
+  },
+  {
+    "id": "inst5",
+    "name": "Dr. R. Nair",
+    "experience": "11+ Years",
+    "students": "45,000+",
+    "expertise": "Biology (NCERT)"
+  },
+  {
+    "id": "inst6",
+    "name": "CUET Expert Team",
+    "experience": "10+ Years",
+    "students": "55,000+",
+    "expertise": "CUET UG & PG"
+  },
+  {
+    "id": "inst7",
+    "name": "State Exam Experts",
+    "experience": "12+ Years",
+    "students": "35,000+",
+    "expertise": "EAMCET & State Exams"
+  },
+  {
+    "id": "inst8",
+    "name": "IIT Professors",
+    "experience": "18+ Years",
+    "students": "90,000+",
+    "expertise": "GATE & PSU Exams"
+  },
+  {
+    "id": "inst9",
+    "name": "IIM Alumni",
+    "experience": "13+ Years",
+    "students": "50,000+",
+    "expertise": "CAT & Management"
+  },
+  {
+    "id": "inst10",
+    "name": "Senior Medical Faculty",
+    "experience": "20+ Years",
+    "students": "1,20,000+",
+    "expertise": "NEET PG"
+  }
+]

@@ -1,0 +1,329 @@
+[
+  {
+    "id": "jee-main",
+    "name": "JEE Main",
+    "category": "UG",
+    "conductedBy": "NTA",
+    "examMonths": "January & April",
+    "about": "JEE Main is a national-level engineering entrance examination for admission into top engineering institutes in India.",
+    "eligibility": "Class 11 & 12 PCM students",
+    "examPattern": {
+    "subjects": [
+      {
+        "name": "Physics",
+        "totalQuestions": 25,
+        "marksPerQuestion": 4,
+        "breakdown": [
+          { "type": "MCQ", "questions": 20, "marksPerQuestion": 4, "negativeMarking": "-1" },
+          { "type": "NAT", "questions": 5, "marksPerQuestion": 4, "negativeMarking": "0" }
+        ]
+      },
+      {
+        "name": "Chemistry",
+        "totalQuestions": 25,
+        "marksPerQuestion": 4,
+        "breakdown": [
+          { "type": "MCQ", "questions": 20, "marksPerQuestion": 4, "negativeMarking": "-1" },
+          { "type": "NAT", "questions": 5, "marksPerQuestion": 4, "negativeMarking": "0" }
+        ]
+      },
+      {
+        "name": "Mathematics",
+        "totalQuestions": 25,
+        "marksPerQuestion": 4,
+        "breakdown": [
+          { "type": "MCQ", "questions": 20, "marksPerQuestion": 4, "negativeMarking": "-1" },
+          { "type": "NAT", "questions": 5, "marksPerQuestion": 4, "negativeMarking": "0" }
+        ]
+      }
+    ],
+    "totalQuestions": 75,
+  
+    "marks": 300,
+    "duration": "3 Hours",
+    "negitiveMarking":"Yes"
+  },
+    "speciality": [
+      "IIT-level expert faculty",
+      "Advanced problem-solving training",
+      "High-weightage topic focus",
+      "Smart test generator",
+      "Previous year question practice"
+    ],
+      "hasStreams": false,
+    "officialLink":"https://jeemain.nta.nic.in/",
+    "cta": "Start JEE Main Preparation"
+  },
+{
+  "id": "jee-advanced",
+  "name": "JEE Advanced",
+  "category": "UG",
+  "conductedBy": "IIT",
+  "examMonths": "May / June",
+  "about": "JEE Advanced is a highly competitive national-level engineering entrance examination conducted for admission into the Indian Institutes of Technology (IITs), focusing on deep conceptual understanding and advanced problem-solving skills.",
+  "eligibility": "Top JEE Main qualified students as per the eligibility criteria announced by the conducting IIT",
+  "examPattern": {
+    "subjects": [
+      {
+        "name": "Physics",
+        "totalQuestions": 30,
+        "marksPerQuestion": 4,
+        "breakdown": [
+          { "type": "MCQ", "questions": 20, "marksPerQuestion": 4, "negativeMarking": "-1" },
+          { "type": "Numerical", "questions": 10, "marksPerQuestion": 4, "negativeMarking": "0" }
+        ]
+      },
+      {
+        "name": "Chemistry",
+        "totalQuestions": 30,
+        "marksPerQuestion": 4,
+        "breakdown": [
+          { "type": "MCQ", "questions": 20, "marksPerQuestion": 4, "negativeMarking": "-1" },
+          { "type": "Numerical", "questions": 10, "marksPerQuestion": 4, "negativeMarking": "0" }
+        ]
+      },
+      {
+        "name": "Mathematics",
+        "totalQuestions": 30,
+        "marksPerQuestion": 4,
+        "breakdown": [
+          { "type": "MCQ", "questions": 20, "marksPerQuestion": 4, "negativeMarking": "-1" },
+          { "type": "Numerical", "questions": 10, "marksPerQuestion": 4, "negativeMarking": "0" }
+        ]
+      }
+    ],
+    "totalQuestions": 90,
+    "marks": 360,
+    "duration": "Two papers of 3 Hours each (Paper 1 & Paper 2)",
+    "negativeMarking": "Yes"
+  },
+  "speciality": [
+    "Advanced problem-solving training",
+    "IIT-oriented question patterns",
+    "Rank-focused preparation strategy",
+    "Full-length JEE Advanced mock tests"
+  ],
+  "hasStreams": false,
+  "officialLink": "https://jeeadv.ac.in/",
+  "cta": "Prepare for JEE Advanced"
+}
+,
+{
+  "id": "neet-ug",
+  "name": "NEET-UG",
+  "category": "UG",
+  "conductedBy": "NTA",
+  "examMonths": "May",
+  "about": "NEET-UG is the national-level entrance examination for admission into MBBS, BDS, AYUSH, and allied medical courses across India.",
+  "eligibility": "Class 11 & 12 PCB students",
+  "examPattern": {
+    "subjects": [
+      {
+        "name": "Physics",
+        "totalQuestions": 45,
+        "marksPerQuestion": 4,
+        "breakdown": [
+          { "type": "MCQ", "questions": 45, "marksPerQuestion": 4, "negativeMarking": "-1" }
+        ]
+      },
+      {
+        "name": "Chemistry",
+        "totalQuestions": 45,
+        "marksPerQuestion": 4,
+        "breakdown": [
+          { "type": "MCQ", "questions": 45, "marksPerQuestion": 4, "negativeMarking": "-1" }
+        ]
+      },
+      {
+        "name": "Biology",
+        "totalQuestions": 90,
+        "marksPerQuestion": 4,
+        "breakdown": [
+          { "type": "MCQ", "questions": 90, "marksPerQuestion": 4, "negativeMarking": "-1" }
+        ]
+      }
+    ],
+    "totalQuestions": 180,
+    "marks": 720,
+    "duration": "3 Hours 20 Minutes",
+    "negativeMarking": "Yes"
+  },
+  "speciality": [
+    "Biology-focused smart learning",
+    "NCERT-based preparation",
+    "Concept clarity & systematic revision",
+    "High-score full-length mock test series"
+  ],
+  "hasStreams": false,
+  "officialLink": "https://neet.nta.nic.in/",
+  "cta": "Start NEET-UG Preparation"
+}
+,
+{
+  "id": "bitsat",
+  "name": "BITSAT",
+  "category": "UG",
+  "conductedBy": "BITS Pilani",
+  "examMonths": "May / June",
+  "about": "BITSAT is a computer-based entrance test for admission to undergraduate programs at BITS campuses (Pilani, Goa, Hyderabad).",
+  "eligibility": "Class 12 pass with required minimum marks in PCM/PCB as per BITS admission criteria (usually 75% aggregate in specified subjects)",
+  "languages": ["English"],
+  "examPattern": {
+    "subjects": [
+      {
+        "name": "Physics",
+        "totalQuestions": 40,
+        "marksPerQuestion": 3,
+        "breakdown": [
+          { "type": "MCQ", "questions": 40, "marksPerQuestion": 3, "negativeMarking": "-1" }
+        ]
+      },
+      {
+        "name": "Mathematics",
+        "totalQuestions": 40,
+        "marksPerQuestion": 3,
+        "breakdown": [
+          { "type": "MCQ", "questions": 40, "marksPerQuestion": 3, "negativeMarking": "-1" }
+        ]
+      },
+      {
+        "name": "English & Logical Reasoning",
+        "totalQuestions": 30,
+        "marksPerQuestion": 3,
+        "breakdown": [
+          { "type": "MCQ", "questions": 30, "marksPerQuestion": 3, "negativeMarking": "-1" }
+        ]
+      }
+    ],
+    "totalQuestions": 150,
+    "marks": 450,
+    "duration": "3 Hours",
+    "negativeMarking": "Yes"
+  },
+  "speciality": [
+    "Computer-based test with high-speed objective questions",
+    "Emphasis on accuracy and speed",
+    "Direct admission to BITS campuses based on rank",
+    "Sectional practice and time-management focus"
+  ],
+  "hasStreams": false,
+  "officialLink": "https://www.bitsadmission.com/",
+  "cta": "Prepare for BITSAT"
+},
+{
+  "id": "eamcet",
+  "name": "EAMCET-MPC",
+  "category": "UG",
+  "conductedBy": "State Authority",
+  "examMonths": "May",
+  "about": "EAMCET (EAPCET) is a state-level entrance exam for engineering admissions in Andhra Pradesh and Telangana.",
+  "eligibility": "Intermediate PCM students",
+  "languages": ["English", "Telugu"],
+  "examPattern": {
+    "subjects": [
+      {
+        "name": "Physics",
+        "totalQuestions": 40,
+        "marksPerQuestion": 1,
+        "breakdown": [
+          { "type": "MCQ", "questions": 40, "marksPerQuestion": 1, "negativeMarking": "0" }
+        ]
+      },
+      {
+        "name": "Chemistry",
+        "totalQuestions": 40,
+        "marksPerQuestion": 1,
+        "breakdown": [
+          { "type": "MCQ", "questions": 40, "marksPerQuestion": 1, "negativeMarking": "0" }
+        ]
+      },
+      {
+        "name": "Mathematics",
+        "totalQuestions": 80,
+        "marksPerQuestion": 1,
+        "breakdown": [
+          { "type": "MCQ", "questions": 80, "marksPerQuestion": 1, "negativeMarking": "0" }
+        ]
+      }
+    ],
+    "totalQuestions": 160,
+    "marks": 160,
+    "duration": "3 Hours",
+    "negativeMarking": "No"
+  },
+  "speciality": [
+    "State syllabus alignment",
+    "Speed and accuracy training",
+    "Chapter-wise practice tests",
+    "Previous year paper analysis"
+  ],
+  "hasStreams": false,
+  "officialLink": "https://cets.apsche.ap.gov.in/",
+  "cta": "Prepare for EAMCET"
+}
+,
+{
+  "id": "gate",
+  "name": "GATE",
+  "category": "PG",
+  "conductedBy": "IIT",
+  "examMonths": "February",
+  "about": "GATE is a national-level examination for postgraduate engineering admissions and PSU recruitment across multiple engineering disciplines.",
+  "eligibility": "Engineering graduates or final-year students",
+  "languages": ["English"],
+  "examPattern": {
+    "subjects": ["Stream-specific"],
+    "totalQuestions": 65,
+    "marks": 100,
+    "duration": "3 Hours",
+    "negativeMarking": "Yes (MCQs only)"
+  },
+  "speciality": [
+    "Stream-specific preparation",
+    "Conceptual depth and problem solving",
+    "PSU and MTech focused training",
+    "Advanced mock test analysis"
+  ],
+  "hasStreams": true,
+  "officialLink": "https://gate2025.iitr.ac.in/",
+  "cta": "Prepare for GATE"
+},
+{
+  "id": "jam",
+  "name": "JAM",
+  "category": "PG",
+  "conductedBy": "IIT (rotating)",
+  "examMonths": "February",
+  "about": "JAM (Joint Admission Test for M.Sc.) is a national-level entrance exam for admission to M.Sc., Joint M.Sc.-Ph.D., and other post-bachelor programs at IITs and IISc.",
+  "eligibility": "Bachelor's degree in a relevant discipline or final-year students as per institute criteria",
+  "languages": ["English"],
+  "examPattern": {
+    "subjects": [
+      "Mathematics",
+      "Physics",
+      "Chemistry",
+      "Biological Sciences",
+      "Biotechnology",
+      "Geology",
+      "Economics",
+      "Mathematical Statistics"
+    ],
+    "totalQuestions": 60,
+    "marks": 100,
+    "duration": "3 Hours",
+    "negativeMarking": "Yes (negative marking for certain MCQs; no negative marking for NAT-type questions as specified in the official notification)"
+  },
+  "speciality": [
+    "Subject-specific MSc admissions to premier institutes",
+    "Strong emphasis on analytical and conceptual skills",
+    "Multiple paper options for diverse science backgrounds",
+    "Clear scoring and shortlisting for postgraduate programs"
+  ],
+  "hasStreams": true,
+  "officialLink": "https://jam.iitk.ac.in/",
+  "cta": "Prepare for JAM"
+}
+
+
+
+]

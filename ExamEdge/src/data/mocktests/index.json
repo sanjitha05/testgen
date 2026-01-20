@@ -1,0 +1,18 @@
+{
+  "jee-main": [
+    { "id": "jee-main-1", "name": "JEE Main – Test 1" },
+    { "id": "jee-main-2", "name": "JEE Main – Test 2" } 
+ ],
+
+  "jee-advanced": [
+    { "id": "jee-adv-1", "name": "JEE Advanced – Test 1" }
+  ],
+  "bitsat" : [
+    {"id": "bitsat-1","name": "BITSAT - Test 1"}
+  ],
+
+  "gate-cse": [
+    { "id": "gate-cse-1", "name": "GATE CSE – Test 1" }
+  ]
+ 
+}

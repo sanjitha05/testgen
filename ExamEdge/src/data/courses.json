@@ -1,0 +1,410 @@
+[
+  {
+  "id": "jee-main-complete-prep",
+  "examId": "jee-main",
+  "title": "JEE Main Complete Preparation Course",
+
+  "moduleId": "complete-preparation-program",
+  "courseType": "Full Course",
+
+  "shortDescription": "Complete JEE Main preparation from basics to advanced with structured lectures, tests, and analytics.",
+
+
+  "subjects": "Physics, Chemistry, Mathematics",
+  "totalTopics": 190,
+  "totalVideos": 320,
+  "totalQuestions": 5200,
+  "totalTests": 55,
+
+  "difficultyLevel": "Beginner to Advanced",
+  "bestFor": "Class 11 & 12 Students",
+  "validity": "12 Months",
+
+  "performanceTracking": true,
+  "instructorId": "inst1",
+  "price": "₹14,999",
+  "tag": "Best Seller"
+},
+
+  {
+    "id": "jee-main-crash-learning",
+    "examId": "jee-main",
+    "title": "JEE Main Crash Learning Course",
+    "moduleId": "complete-preparation-program",
+    "courseType": "Crash Course",
+
+    "subjects": "High-Weightage JEE Main Topics",
+    "totalTopics": 80,
+    "totalVideos": 120,
+    "totalQuestions": 1800,
+    "totalTests": 20,
+
+    "difficultyLevel": "Intermediate to Advanced",
+    "bestFor": "Repeaters & Fast Revision",
+    "validity": "6 Months",
+
+    "includes": [
+          "Structured Concept-to-Advanced Video Lectures",
+          "Daily Practice Questions",
+          "Chapter-wise & Full-Length Tests",
+          "NCERT-Aligned Study Notes",
+          "Previous Year JEE Main Questions",
+          "Performance Analytics & Rank Prediction"
+        ],
+
+    "performanceTracking": false,
+    "instructorId": "inst2",
+    "price": "₹5,999",
+    "tag": "High Demand"
+  },
+
+  {
+    "id": "jee-main-complete-physics",
+    "examId": "jee-main",
+    "title": "JEE Main Physics Complete Preparation",
+    "moduleId": "complete-preparation-program",
+    "courseType": "Subject-wise Course",
+
+    "subjects": "Physics",
+    "totalTopics": 65,
+    "totalVideos": 110,
+    "totalQuestions": 1800,
+    "totalTests": 18,
+
+    "difficultyLevel": "Beginner to Advanced",
+    "bestFor": "Physics-Focused Preparation",
+    "validity": "9 Months",
+
+    "includes": [
+          "Structured Concept-to-Advanced Video Lectures",
+          "Daily Practice Questions",
+          "Chapter-wise & Full-Length Tests",
+          "NCERT-Aligned Study Notes",
+          "Previous Year JEE Main Questions",
+          "Performance Analytics & Rank Prediction"
+        ],
+
+    "performanceTracking": true,
+    "instructorId": "inst1",
+    "price": "₹6,499",
+    "tag": "Subject Focused"
+  },
+
+  {
+    "id": "jee-main-complete-chemistry",
+    "examId": "jee-main",
+    "title": "JEE Main Chemistry Complete Preparation",
+    "moduleId": "complete-preparation-program",
+    "courseType": "Subject-wise Course",
+
+    "subjects": "Chemistry",
+    "totalTopics": 60,
+    "totalVideos": 105,
+    "totalQuestions": 1700,
+    "totalTests": 17,
+
+    "difficultyLevel": "Beginner to Advanced",
+    "bestFor": "Chemistry Mastery",
+    "validity": "9 Months",
+
+    "includes": [
+          "Structured Concept-to-Advanced Video Lectures",
+          "Daily Practice Questions",
+          "Chapter-wise & Full-Length Tests",
+          "NCERT-Aligned Study Notes",
+          "Previous Year JEE Main Questions",
+          "Performance Analytics & Rank Prediction"
+        ],
+
+    "performanceTracking": true,
+    "instructorId": "inst1",
+    "price": "₹6,499",
+    "tag": "NCERT Based"
+  },
+
+  {
+    "id": "jee-main-complete-maths",
+    "examId": "jee-main",
+    "title": "JEE Main Mathematics Complete Preparation",
+    "moduleId": "complete-preparation-program",
+    "courseType": "Subject-wise Course",
+
+    "subjects": "Mathematics",
+    "totalTopics": 65,
+    "totalVideos": 105,
+    "totalQuestions": 1700,
+    "totalTests": 20,
+
+    "difficultyLevel": "Intermediate to Advanced",
+    "bestFor": "Problem-Solving Improvement",
+    "validity": "9 Months",
+
+    "includes": [
+          "Structured Concept-to-Advanced Video Lectures",
+          "Daily Practice Questions",
+          "Chapter-wise & Full-Length Tests",
+          "NCERT-Aligned Study Notes",
+          "Previous Year JEE Main Questions",
+          "Performance Analytics & Rank Prediction"
+        ],
+
+    "performanceTracking": true,
+    "instructorId": "inst1",
+    "price": "₹6,499",
+    "tag": "Problem Intensive"
+  },
+
+  {
+    "id": "jee-main-complete-calculus",
+    "examId": "jee-main",
+    "title": "JEE Main Calculus Complete Preparation",
+    "moduleId": "complete-preparation-program",
+    "deliveryType": "Complete Preparation Program",
+    "courseType": "Topic-wise Course",
+
+    "subjects": "Mathematics – Calculus",
+    "totalTopics": 20,
+    "totalVideos": 45,
+    "totalQuestions": 800,
+    "totalTests": 8,
+
+    "difficultyLevel": "Intermediate",
+    "bestFor": "High-Weightage Topic Focus",
+    "validity": "6 Months",
+
+  "includes": [
+        "Structured Concept-to-Advanced Video Lectures",
+        "Daily Practice Questions",
+        "Chapter-wise & Full-Length Tests",
+        "NCERT-Aligned Study Notes",
+        "Previous Year JEE Main Questions",
+        "Performance Analytics & Rank Prediction"
+      ],
+
+    "performanceTracking": false,
+    "instructorId": "inst1",
+    "price": "₹2,999",
+    "tag": "High Weightage"
+  },
+
+  {
+    "id": "jee-main-complete-electrostatics",
+    "examId": "jee-main",
+    "title": "JEE Main Electrostatics Complete Preparation",
+    "moduleId": "complete-preparation-program",
+    "deliveryType": "Complete Preparation Program",
+    "courseType": "Topic-wise Course",
+
+    "subjects": "Physics – Electrostatics",
+    "totalTopics": 15,
+    "totalVideos": 35,
+    "totalQuestions": 650,
+    "totalTests": 6,
+
+    "difficultyLevel": "Intermediate",
+    "bestFor": "Physics Scoring Topic",
+    "validity": "6 Months",
+
+    "includes": [
+          "Structured Concept-to-Advanced Video Lectures",
+          "Daily Practice Questions",
+          "Chapter-wise & Full-Length Tests",
+          "NCERT-Aligned Study Notes",
+          "Previous Year JEE Main Questions",
+          "Performance Analytics & Rank Prediction"
+        ],
+
+    "performanceTracking": false,
+    "instructorId": "inst1",
+    "price": "₹2,499",
+    "tag": "Scoring Topic"
+  },
+
+{
+  "id": "jee-main-test-full",
+  "examId": "jee-main",
+  "title": "JEE Main Test Series Program",
+
+  "moduleId": "test-series-program",
+  "courseType": "Full Course",
+
+  "subjects": "Physics, Chemistry, Mathematics",
+  "totalQuestions": 3500,
+  "totalTests": 40,
+
+  "difficultyLevel": "Exam Level",
+  "bestFor": "Self-Study Students",
+  "validity": "6 Months",
+
+  "performanceTracking": true,
+  "price": "₹3,499",
+  "tag": "Best Value"
+},
+{
+  "id": "jee-main-test-mat",
+  "examId": "jee-main",
+  "title": "JEE Main Mathematics Test Series Program",
+
+  "moduleId": "test-series-program",
+  "courseType": "Subject-wise Course",
+
+  "subjects": "Mathematics",
+  "totalQuestions": 3500,
+  "totalTests": 40,
+
+  "difficultyLevel": "Exam Level",
+  "bestFor": "Self-Study Students",
+  "validity": "6 Months",
+
+  "performanceTracking": true,
+  "price": "₹3,499",
+  "tag": "Best Value"
+},
+
+{
+  "id": "jee-main-practice-full",
+  "examId": "jee-main",
+  "title": "JEE Main Practice Program",
+
+  "moduleId": "practice-program",
+  "courseType": "Full Course",
+
+  "subjects": "Physics, Chemistry, Mathematics",
+  "totalTopics": 190,
+  "totalQuestions": 6000,
+
+  "difficultyLevel": "Mixed",
+  "bestFor": "Practice & Accuracy",
+  "validity": "9 Months",
+
+  "performanceTracking": false,
+  "instructorId": "inst1",
+  "price": "₹2,999",
+  "tag": "Practice Heavy"
+},
+
+  {
+    "id": "jee-advanced-test-series-physics",
+    "examId": "jee-advanced",
+    "title": "JEE Advanced Physics Test Series Program",
+     "moduleId": "test-series-program",
+    "courseType": "Subject-wise Course",
+
+    "subjects": "Advanced Physics",
+    "totalTopics": 170,
+    "totalVideos": 280,
+    "totalQuestions": 4600,
+    "totalTests": 40,
+
+    "difficultyLevel": "Advanced",
+    "bestFor": "IIT Aspirants",
+    "validity": "12 Months",
+
+    "includes": [
+      "Advanced Concept Lectures",
+      "IIT-Level Problem Solving",
+      "Subject-wise & Full-Length Advanced Tests",
+      "Previous Year JEE Advanced Questions",
+      "Detailed Solution Discussions"
+    ],
+
+    "performanceTracking": true,
+    "price": "₹18,999",
+    "tag": "Rank Booster"
+  },
+    {
+    "id": "jee-advanced-complete-prep",
+    "examId": "jee-advanced",
+    "title": "JEE Advanced Complete Preparation Program",
+     "moduleId": "complete-preparation-program",
+    "deliveryType": "Complete Preparation Program",
+    "courseType": "Full Course",
+
+    "subjects": "Advanced Physics, Chemistry, Mathematics",
+    "totalTopics": 170,
+    "totalVideos": 280,
+    "totalQuestions": 4600,
+    "totalTests": 40,
+
+    "difficultyLevel": "Advanced",
+    "bestFor": "IIT Aspirants",
+    "validity": "12 Months",
+
+    "includes": [
+      "Advanced Concept Lectures",
+      "IIT-Level Problem Solving",
+      "Subject-wise & Full-Length Advanced Tests",
+      "Previous Year JEE Advanced Questions",
+      "Detailed Solution Discussions"
+    ],
+
+    "performanceTracking": true,
+    "instructorId": "inst3",
+    "price": "₹18,999",
+    "tag": "Rank Booster"
+  },
+
+  {
+    "id": "neet-ug-complete-prep",
+    "examId": "neet-ug",
+    "title": "NEET UG Complete Preparation Program",
+    "moduleId": "complete-preparation-program",
+    "deliveryType": "Complete Preparation Program",
+    "courseType": "Full Course",
+
+    "subjects": "Biology, Physics, Chemistry",
+    "totalTopics": 165,
+    "totalVideos": 300,
+    "totalQuestions": 5000,
+    "totalTests": 50,
+
+    "difficultyLevel": "Beginner to Advanced",
+    "bestFor": "Medical Aspirants",
+    "validity": "12 Months",
+
+    "includes": [
+      "NCERT-Focused Video Lectures",
+      "Biology Concept Mastery",
+      "Physics & Chemistry Numerical Practice",
+      "Full-Length NEET Mock Tests",
+      "Detailed Performance Reports"
+    ],
+
+    "performanceTracking": true,
+    "instructorId": "inst4",
+    "price": "₹15,999",
+    "tag": "Most Popular"
+  },
+
+
+  {
+    "id": "eamcet-complete-prep",
+    "examId": "eamcet",
+    "title": "EAMCET Complete Preparation Program",
+    "moduleId": "complete-preparation-program",
+    "deliveryType": "Complete Preparation Program",
+    "courseType": "Full Course",
+
+    "subjects": "Physics, Chemistry, Mathematics",
+    "totalTopics": 140,
+    "totalVideos": 240,
+    "totalQuestions": 3600,
+    "totalTests": 35,
+
+    "difficultyLevel": "Intermediate",
+    "bestFor": "State Entrance Aspirants",
+    "validity": "9 Months",
+
+    "includes": [
+      "State Syllabus Aligned Lectures",
+      "Speed & Accuracy Practice",
+      "Chapter-wise Tests",
+      "Previous Year Paper Practice"
+    ],
+
+    "performanceTracking": true,
+    "instructorId": "inst7",
+    "price": "₹8,999",
+    "tag": "State Rank Focused"
+  }
+]

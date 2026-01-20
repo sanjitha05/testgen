@@ -1,0 +1,169 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+
+:root {
+  --primary: #6258e6;
+  --soft-bg: #eef4ff;
+  --gradient-main: linear-gradient(135deg, #565f83, #70d7e9);
+  --gradient-soft: linear-gradient(135deg, #b7bfdf, #c3ecf1);
+  --text-dark: #1f2937;
+  --text-gray: #6b7280;
+  --card-bg: #ffffff;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: var(--soft-bg);
+  color: var(--text-dark);
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 1%;
+  background: var(--gradient-main);
+    border-radius: 22px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+.navbar a {
+   margin-left: 15px;
+  color: white;
+  font-weight: 500;
+   text-decoration: none;
+}
+
+.navbar div{
+    margin-left: 15px;
+    color:  white;
+}
+.navbardiv{
+    display:flex;
+    padding-top: 20px;
+}
+
+.hero {
+  display: flex;
+  gap: 50px;
+  padding: 70px 3% 50px 8%;
+  background: var(--gradient-main);
+  border-radius: 22px;
+  margin: 5px;
+  align-items: center;
+}
+
+.hero-text h1 {
+  font-size: 46px;
+  color: white;
+}
+
+.hero-text span {
+  color: white;
+}
+
+.hero-text p {
+  color: #f1f5f9;
+  margin: 18px 0 28px;
+}
+
+.hero-actions button {
+  padding: 14px 28px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  margin-right: 14px;
+  background: white;
+  color: #565f83;
+}
+
+.outline-btn {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 18px;
+}
+
+.tagline {
+  text-align: center;
+  padding: 20px 12%;
+}
+
+.tagline span {
+  color: #344070;
+  font-size: 38px;
+}
+
+.programs {
+  display: flex;
+  gap: 30px;
+  padding: 40px 8%;
+}
+
+.program-card {
+  flex: 1;
+  background: white;
+  padding: 36px;
+  border-radius: 18px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+.program-card h3 {
+  color:  #3e4a7a;
+  margin-bottom: 18px;
+  font-size: 28px;
+}
+
+.program-card button {
+  margin-top: 20px;
+  background: var(--gradient-main);
+  font-size: 20px;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+}
+
+.features {
+  padding: 70px 8%;
+  text-align: center;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.feature-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.feature-card img {
+  height: 200px;
+  margin-bottom: 15px;
+}
+
+.about,
+.contact {
+  padding: 60px 14%;
+  text-align: center;
+}
+
+.contact {
+  background: var(--gradient-soft);
+}
+
+.footer {
+  background: #111827;
+  color: white;
+  text-align: center;
+  padding: 22px;
+}

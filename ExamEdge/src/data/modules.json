@@ -1,0 +1,39 @@
+[
+  {
+    "id": "complete-preparation-program",
+    "title": "Complete Preparation Program",
+    "description": "End-to-end preparation from basics to advanced level.",
+    "features": [
+      "Structured Concept-to-Advanced Video Lectures",
+      "Daily Practice Questions",
+      "Chapter-wise & Full-Length Tests",
+      "NCERT-Aligned Study Notes",
+      "Previous Year Questions",
+      "Performance Analytics & Rank Prediction"
+    ]
+  },
+  {
+    "id": "test-series-program",
+    "title": "Test Series Program",
+    "description": "Exam-focused testing and performance analysis.",
+    "features": [
+      "Chapter-wise Tests",
+      "Full-Length Mock Tests",
+      "Previous Year Question Papers",
+      "Answer Keys & Detailed Explanations",
+      "All India Rank & Performance Analytics"
+    ]
+  },
+  {
+    "id": "practice-program",
+    "title": "Practice Program",
+    "description": "High-volume practice for speed and accuracy.",
+    "features": [
+      "Daily Practice Questions",
+      "Topic-wise Question Banks",
+      "Mixed Difficulty Level Practice",
+      "Previous Year Questions",
+      "Basic Performance Insights"
+    ]
+  }
+]

@@ -1,0 +1,442 @@
+[
+  {
+    "id": "gate-cse",
+    "name": "Computer Science & Engineering",
+    "examId": "gate",
+    "examPattern": {
+      "subjects": [
+        {
+          "name": "Discrete Mathematics",
+          "totalQuestions": 11,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 11, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Data Structures & Algorithms",
+          "totalQuestions": 13,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 13, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Digital Logic & Computer Architecture",
+          "totalQuestions": 10,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Programming & Compiler Design",
+          "totalQuestions": 8,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 8, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Operating Systems & Databases",
+          "totalQuestions": 12,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 12, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Networks & Aptitude",
+          "totalQuestions": 11,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 11, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        }
+      ],
+      "totalQuestions": 65,
+      "marks": 100,
+      "duration": "3 Hours",
+      "negativeMarking": "Yes"
+    }
+  },
+  {
+    "id": "gate-me",
+    "name": "Mechanical Engineering",
+    "examId": "gate",
+    "examPattern": {
+      "subjects": [
+        {
+          "name": "Engineering Mechanics",
+          "totalQuestions": 10,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Thermodynamics & Heat Transfer",
+          "totalQuestions": 12,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 12, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Fluid Mechanics",
+          "totalQuestions": 11,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 11, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Machine Design",
+          "totalQuestions": 10,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Manufacturing & Industrial Engineering",
+          "totalQuestions": 11,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 11, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "General Aptitude & Mathematics",
+          "totalQuestions": 11,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 11, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        }
+      ],
+      "totalQuestions": 65,
+      "marks": 100,
+      "duration": "3 Hours",
+      "negativeMarking": "Yes"
+    }
+  },
+  {
+    "id": "gate-ce",
+    "name": "Civil Engineering",
+    "examId": "gate",
+    "examPattern": {
+      "subjects": [
+        {
+          "name": "Structural Analysis & Design",
+          "totalQuestions": 12,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 12, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Geotechnical Engineering",
+          "totalQuestions": 10,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Water Resources & Hydraulics",
+          "totalQuestions": 11,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 11, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Transportation & Environmental Engineering",
+          "totalQuestions": 10,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Surveying & Engineering Materials",
+          "totalQuestions": 10,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "General Aptitude & Mechanics",
+          "totalQuestions": 12,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 12, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        }
+      ],
+      "totalQuestions": 65,
+      "marks": 100,
+      "duration": "3 Hours",
+      "negativeMarking": "Yes"
+    }
+  },
+  {
+    "id": "gate-ece",
+    "name": "Electronics & Communication Engineering",
+    "examId": "gate",
+    "examPattern": {
+      "subjects": [
+        {
+          "name": "Analog Circuits",
+          "totalQuestions": 11,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 11, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Digital Circuits & Microprocessors",
+          "totalQuestions": 11,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 11, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Signals & Systems",
+          "totalQuestions": 11,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 11, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Electromagnetics & Wave Propagation",
+          "totalQuestions": 10,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "Communication Systems",
+          "totalQuestions": 10,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        },
+        {
+          "name": "General Aptitude & Mathematics",
+          "totalQuestions": 12,
+          "marksPerQuestion": 1.5,
+          "breakdown": [
+            { "type": "MCQ", "questions": 12, "marksPerQuestion": 1.5, "negativeMarking": "-0.33" }
+          ]
+        }
+      ],
+      "totalQuestions": 65,
+      "marks": 100,
+      "duration": "3 Hours",
+      "negativeMarking": "Yes"
+    }
+  },
+  {
+    "id": "jam-mathematics",
+    "name": "Mathematics",
+    "examId": "jam",
+    "examPattern": {
+      "subjects": [
+        {
+          "name": "Analysis",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        },
+        {
+          "name": "Algebra",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        },
+        {
+          "name": "Topology & Geometry",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        },
+        {
+          "name": "Applied Mathematics",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        }
+      ],
+      "totalQuestions": 60,
+      "marks": 100,
+      "duration": "3 Hours",
+      "negativeMarking": "Yes"
+    }
+  },
+  {
+    "id": "jam-physics",
+    "name": "Physics",
+    "examId": "jam",
+    "examPattern": {
+      "subjects": [
+        {
+          "name": "Classical Mechanics",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        },
+        {
+          "name": "Thermodynamics & Statistical Physics",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        },
+        {
+          "name": "Electromagnetism & Optics",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        },
+        {
+          "name": "Modern Physics & Quantum Mechanics",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        }
+      ],
+      "totalQuestions": 60,
+      "marks": 100,
+      "duration": "3 Hours",
+      "negativeMarking": "Yes"
+    }
+  },
+  {
+    "id": "jam-chemistry",
+    "name": "Chemistry",
+    "examId": "jam",
+    "examPattern": {
+      "subjects": [
+        {
+          "name": "Physical Chemistry",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        },
+        {
+          "name": "Inorganic Chemistry",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        },
+        {
+          "name": "Organic Chemistry",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        },
+        {
+          "name": "Analytical & Biochemistry",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        }
+      ],
+      "totalQuestions": 60,
+      "marks": 100,
+      "duration": "3 Hours",
+      "negativeMarking": "Yes"
+    }
+  },
+  {
+    "id": "jam-biological-sciences",
+    "name": "Biological Sciences",
+    "examId": "jam",
+    "examPattern": {
+      "subjects": [
+        {
+          "name": "Cell & Molecular Biology",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        },
+        {
+          "name": "Genetics & Botany",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        },
+        {
+          "name": "Zoology & Ecology",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        },
+        {
+          "name": "Physiology & Biochemistry",
+          "totalQuestions": 15,
+          "marksPerQuestion": 1.67,
+          "breakdown": [
+            { "type": "MCQ", "questions": 10, "marksPerQuestion": 1.67, "negativeMarking": "-0.55" },
+            { "type": "NAT", "questions": 5, "marksPerQuestion": 1.67, "negativeMarking": "0" }
+          ]
+        }
+      ],
+      "totalQuestions": 60,
+      "marks": 100,
+      "duration": "3 Hours",
+      "negativeMarking": "Yes"
+    }
+  }
+]

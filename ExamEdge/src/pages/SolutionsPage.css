@@ -1,0 +1,337 @@
+.solutions-page {
+  background: #fff;
+  display: flex;
+  height: 100vh;
+  background: #f8fafc;
+}
+
+/* Sidebar */
+.solutions-sidebar {
+  width: 260px;
+  padding: 16px;
+  border-right: 1px solid #e5e7eb;
+  background: #fff;
+
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.subject-select {
+  width: 100%;
+  font-size: 16px;
+  padding: 10px 36px 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #e6eef8;
+  background: linear-gradient(180deg, #fff, #f8fafc);
+  box-shadow: inset 0 -1px 0 rgba(2,6,23,0.02), 0 6px 18px rgba(2,6,23,0.03);
+  font-weight: 700;
+  color: #0b1220;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+
+  /* custom chevron using background */
+  background-image:
+    linear-gradient(45deg, transparent 50%, #9ca3af 50%),
+    linear-gradient(135deg, #9ca3af 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.subject-select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 6px 18px rgba(37,99,235,0.08);
+}
+
+
+.question-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 4px;
+}
+.section-heading {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 6px 0 10px;
+  color: #334155;
+}
+
+
+.q-nav-btn {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 5px;
+  width: 100%;      
+  display: block;  
+}
+
+
+.q-nav-btn.correct {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.q-nav-btn.wrong {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.q-nav-btn.unattempted {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.q-nav-btn.active {
+  outline: 2px solid #2563eb;
+}
+
+/* Content */
+.solutions-content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.answer-boxes {
+  display: flex;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.answer-box {
+  flex: 1;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.answer-box.user {
+  background: #eff6ff;
+}
+
+.answer-box.correct {
+  background: #ecfdf5;
+}
+
+.solution-image {
+  width: 50%;
+  margin-top: 12px;
+  border-radius: 8px;
+}
+
+/* Video solution button */
+.video-solution-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  background: linear-gradient(90deg, #2563eb 0%, #7c3aed 100%);
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 12px 0;
+  width: fit-content;
+  box-shadow: 0 8px 20px rgba(37,99,235,0.14);
+  user-select: none;
+}
+.video-solution-box:hover {
+  transform: translateY(-2px);
+  transition: transform 140ms ease;
+}
+.play-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  flex: 0 0 36px;
+}
+.video-label {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Video modal */
+.video-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 12, 17, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  padding: 20px;
+}
+.video-modal-content {
+  background: #0b1220;
+  padding: 14px;
+  border-radius: 12px;
+  max-width: 1100px;
+  width: 100%;
+  box-shadow: 0 16px 48px rgba(2,6,23,0.6);
+  position: relative;
+}
+.video-wrapper {
+  position: relative;
+  padding-top: 56.25%; /* 16:9 */
+  height: 0;
+}
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+.video-close {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+/* Video thumbnail (replaces .video-solution-box) */
+.video-thumb {
+  position: relative;
+  width: 320px;          /* thumbnail width */
+  height: 158px;         /* 16:9 aspect */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(37,99,235,0.12);
+  cursor: pointer;
+  margin: 16px 0;
+  display: inline-block;
+  background: linear-gradient(180deg, #eef2ff, #f8fafc);
+}
+
+.video-thumb-img,
+.video-thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Placeholder for non-YouTube or missing thumbnail */
+.video-thumb-placeholder {
+  background: linear-gradient(90deg, #e2e8f0 0%, #c7d2fe 100%);
+}
+
+/* dark translucent overlay with centered play icon */
+.video-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(2,6,23,0.08), rgba(2,6,23,0.16));
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.video-thumb:hover .video-thumb-overlay {
+  background: linear-gradient(180deg, rgba(2,6,23,0.14), rgba(2,6,23,0.22));
+  transform: translateY(-3px);
+}
+
+/* circular play button */
+.video-thumb-play {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.92);
+  color: #0b1220;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 20px;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.18);
+}
+.video-solution-label {
+  font-weight: 700;
+  font-size: 25px;
+  margin-top: 20px;
+}
+/* small / responsive variant */
+@media (max-width: 480px) {
+  .video-thumb { width: 220px; height: 124px; }
+  .video-thumb-play { width: 48px; height: 48px; font-size: 18px; }
+}
+
+
+
+/* left content */
+.optionn-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+.option.selected-correct {
+  background: #d4ece1;            
+  border: 1px solid #16a34a;       
+}
+
+.option.selected-wrong {
+  background: #fff1f2;             
+  border: 1px solid #ef4444;   
+}
+
+/* show green border on correct option even if user didn't select it */
+.option.correct-unselected {
+  border: 1px solid #16a34a;
+}
+
+/* badges container on the right */
+.optionn-badges {
+  display: flex;
+  flex-direction: column; /* stack badges if both present */
+  gap: 8px;
+  align-items: flex-end;
+  margin-left: 12px;
+}
+
+/* badges are no longer absolute */
+.optionn-badge.small {
+  position: static;
+  transform: none;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* color variants */
+.optionn-badge.small.correct-badge {
+  background: linear-gradient(90deg,#16a34a,#22c55e);
+  color: #fff;
+}
+.optionn-badge.small.your-badge {
+  background: #ef4444;
+  color: #fff;
+}
+
