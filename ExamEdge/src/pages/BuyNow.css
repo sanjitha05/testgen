@@ -1,43 +1,63 @@
 .buy-page {
-  padding: 50px 10%;
-  background: #f9fbff;
+  padding: 60px 8%;
+  background: var(--soft-bg);
+  min-height: 100vh;
 }
 
 .buy-title {
-  font-size: 34px;
-  color: #0b5ed7;
-  margin-bottom: 30px;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 40px;
+  text-align: center;
 }
 
 .buy-layout {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1.5fr 1fr;
   gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .buy-box {
   background: white;
-  padding: 25px;
-  border-radius: 12px;
-  margin-bottom: 25px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  padding: 32px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f1f5f9;
 }
-.buy-box input {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 8px;
-  border: 1px solid #d1d7dc;
-  font-size: 15px;
-}
-
 
 .buy-box h3 {
-  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--text-dark);
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 12px;
 }
+
+.buy-box input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  font-size: 15px;
+  background: #f8fafc;
+  transition: all 0.2s;
+}
+
+.buy-box input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
 .form-row {
   display: grid;
-  gap: 16px;
-  margin-top: 10px;
+  gap: 20px;
 }
 
 .form-row.two-col {
@@ -48,66 +68,139 @@
   grid-template-columns: 1fr 1fr 1fr;
 }
 
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
-.payment-options label {
-  display: block;
-  margin-bottom: 10px;
-}
-.payment-options input[type="radio"] {
-  width: 18px;
-  height: 18px;
-  margin-right: 10px;
-  cursor: pointer;
-}
 .payment-options label {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-  font-size: 16px;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.payment-options label:hover {
+  background: #f8fafc;
+}
+
+.payment-options input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--primary);
   cursor: pointer;
 }
 
-
 .order-summary {
   background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  padding: 32px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
   height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.order-summary h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 24px;
 }
 
 .course-name {
-  font-weight: 600;
-  margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.course-type {
+  font-size: 14px;
+  color: var(--text-gray);
+  margin-bottom: 16px;
+}
+
+.instructor {
+  font-size: 15px;
+  color: var(--text-slate);
+  margin-bottom: 24px;
+}
+
+.order-summary hr {
+  border: 0;
+  border-top: 1px solid #f1f5f9;
+  margin: 24px 0;
 }
 
 .price-row {
   display: flex;
   justify-content: space-between;
-  margin: 12px 0;
+  margin-bottom: 12px;
+  color: var(--text-slate);
 }
 
-.total {
-  font-size: 18px;
-  font-weight: 700;
+.price-row.total {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-top: 8px;
 }
 
 .secure-text {
-  font-size: 14px;
-  margin-top: 15px;
-  color: #6b7280;
+  font-size: 13px;
+  margin-top: 24px;
+  color: var(--text-gray);
+  text-align: center;
+  background: #f0fdf4;
+  padding: 8px;
+  border-radius: 8px;
+  color: #16a34a;
 }
 
 .proceed-btn {
-  margin-top: 40px;
+  margin-top: 32px;
   width: 100%;
-  padding: 16px;
-  background: #0b5ed7;
+  padding: 18px;
+  background: var(--primary);
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 14px;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+}
+
+.proceed-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
+}
+
+@media (max-width: 992px) {
+  .buy-layout {
+    grid-template-columns: 1fr;
+  }
+  .order-summary {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .buy-page {
+    padding: 30px 5%;
+  }
+  .form-row.two-col, .form-row.three-col {
+    grid-template-columns: 1fr;
+  }
+  .buy-title {
+    font-size: 28px;
+  }
 }

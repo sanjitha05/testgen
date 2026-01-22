@@ -79,6 +79,17 @@ export default function DemoOtpLogin() {
     if (error) {
       setError("Invalid or expired OTP");
     } else {
+      // Enter full-screen mode before navigating
+      try {
+        const docEl = document.documentElement;
+        if (docEl.requestFullscreen) {
+          docEl.requestFullscreen().catch(() => {
+            console.warn("Fullscreen request failed, proceeding anyway.");
+          });
+        }
+      } catch (err) {
+        console.warn("Fullscreen not supported or blocked.");
+      }
       navigate(path);
     }
   };

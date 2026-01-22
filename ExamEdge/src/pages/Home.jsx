@@ -3,13 +3,16 @@ import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 
-import heroImg from "../assets/home_imgg.png";
-import feature1 from "../assets/smart_learning.jpg";
-import feature2 from "../assets/tests.jpg";
-import feature3 from "../assets/instructors.jpg";
-import feature4 from "../assets/analytics.jpg";
-import feature5 from "../assets/questions.jpg";
-import feature6 from "../assets/doubt_solving.jpg";
+import heroImg from "../assets/home_img_bg.png";
+import ug from "../assets/ug.png"
+import pg from "../assets/pg.png"
+
+import feature1 from "../assets/smart_learningg.png";
+import feature2 from "../assets/testss.png";
+import feature3 from "../assets/instructorss.png";
+import feature4 from "../assets/performancee.png";
+import feature5 from "../assets/questionss.png";
+import feature6 from "../assets/doubtss.png";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -31,8 +34,8 @@ const Home = () => {
       <section className="hero">
         <div className="hero-text">
           <h1>
-            Your Next Step to <br />
-            <span>Exam Success Starts Here</span>
+            Learn Smart   &   Rank Higher<br />
+            <span>For Undergraduates  <br/>Postgraduates</span>
           </h1>
           <p>
             Complete UG & PG entrance exam preparation with expert guidance,
@@ -58,29 +61,28 @@ const Home = () => {
         </h2>
       </section>
 
-      {/* UG / PG */}
-      <section className="programs">
-      <div className="program-card">
-  <h3>UG Entrance Exams</h3>
+      {/* UG / PG ALTERNATING SECTION */}
+<section className="programs-alt">
 
+  {/* UG */}
+  <div className="program-row">
+    <div className="program-image">
+      <img src={ug} alt="UG students" />
+    </div>
+
+    <div className="program-content">
+      <h3>UG Entrance Exams</h3>
       <p className="program-subtitle">
         National-level entrance exams for engineering, medical, and university admissions.
       </p>
 
       <ul className="program-list">
-        <li>
-          <strong>JEE Main & Advanced     </strong>
-          <span>Engineering admissions (IITs, NITs, IIITs)</span>
-        </li>
-        <li>
-          <strong>NEET – UG     </strong>
-          <span>Medical and allied health courses</span>
-        </li>
-        <li>
-          <strong>TS & AP EAMCET    </strong>
-          <span>State-level engineering entrance exams</span>
-        </li>
+        <li><strong>JEE Main & Advanced</strong> – IITs, NITs, IIITs</li>
+        <li><strong>NEET – UG</strong> – Medical & allied health</li>
+        <li><strong>BITSAT</strong> – BITS campuses</li>
+        <li><strong>TS & AP EAMCET</strong> – State-level exams</li>
       </ul>
+
       <button
         className="program-btn"
         onClick={() => navigate("/exams?category=UG")}
@@ -88,34 +90,35 @@ const Home = () => {
         Explore UG Entrance Exams
       </button>
     </div>
-<div className="program-card">
-  <h3>PG Entrance Exams </h3>
+  </div>
 
-  <p className="program-subtitle">
-    Postgraduate entrance exams for admissions into IITs, IIMs, central universities, and medical institutes.
-  </p>
+  {/* PG */}
+  <div className="program-row reverse">
+    <div className="program-image">
+      <img src={pg} alt="PG preparation" />
+    </div>
 
-  <ul className="program-list">
-    <li>
-      <strong>GATE  </strong>
-      <span>Engineering, science & PSU recruitment</span>
-    </li>
-     <li>
-      <strong>JAM  </strong>
-      <span>M.Sc. & research admissions (IITs / IISc)</span>
-    </li>
-  </ul>
+    <div className="program-content">
+      <h3>PG Entrance Exams</h3>
+      <p className="program-subtitle">
+        Postgraduate entrance exams for IITs, IIMs, central universities & research institutes.
+      </p>
 
+      <ul className="program-list">
+        <li><strong>GATE</strong> – Engineering, science & PSU recruitment</li>
+        <li><strong>JAM</strong> – M.Sc. & research (IITs / IISc)</li>
+      </ul>
 
-  <button
-    className="program-btn"
-    onClick={() => navigate("/exams?category=PG")}
-  >
-    Explore PG Entrance Exams
-  </button>
-</div>
+      <button
+        className="program-btn"
+        onClick={() => navigate("/exams?category=PG")}
+      >
+        Explore PG Entrance Exams
+      </button>
+    </div>
+  </div>
 
-      </section>
+</section>
 
       {/* FEATURES */}
       <section className="features">
@@ -162,26 +165,63 @@ const Home = () => {
 
       {/* ABOUT */}
       <section ref={aboutRef} className="about">
-        <h2>About eGradTutor</h2>
-        <p>
-          eGradTutor is a modern education platform focused on helping students
-          crack competitive UG & PG entrance exams with confidence. We blend
-          expert teaching, structured content, and technology-driven testing to
-          deliver real results.
-        </p>
-      </section>
+  <h2>About eGradTutor</h2>
+  <p>
+    We help students crack competitive UG & PG entrance exams through
+    expert-led learning, structured preparation, and real exam practice.
+  </p>
 
-      {/* CONTACT */}
-      <section ref={contactRef} className="contact">
-        <h2>Contact Us</h2>
-        <p>Email: support@egradtutor.com</p>
-        <p>Phone: +91 98765 43210</p>
-      </section>
+  <div className="about-stats">
+    <div><strong>UG & PG Exams</strong><span>Comprehensive coverage</span></div>
+    <div><strong>Expert Faculty</strong><span>Exam-focused teaching</span></div>
+    <div><strong>Smart Testing</strong><span>Performance analytics</span></div>
+  </div>
+</section>
 
       {/* FOOTER */}
       <footer className="footer">
-        © 2026 eGradTutor. Learning Simplified.
-      </footer>
+  <div className="footer-grid">
+
+    <div>
+      <h4>eGradTutor</h4>
+      <p>
+        Learning simplified for UG & PG entrance exams with expert guidance
+        and smart practice tools.
+      </p>
+    </div>
+
+    <div>
+      <h4>Programs</h4>
+      <ul>
+        <li>UG Entrance Exams</li>
+        <li>PG Entrance Exams</li>
+        <li>Mock Tests</li>
+        <li>Performance Analytics</li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Quick Links</h4>
+      <ul>
+        <li onClick={() => scrollToSection(aboutRef)}>About Us</li>
+        <li onClick={() => navigate("/exams")}>Exams</li>
+        <li onClick={() => navigate("/mock-test")}>Mock Test</li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Contact</h4>
+      <p>Email: support@egradtutor.com</p>
+      <p>Phone: +91 98765 43210</p>
+    </div>
+
+  </div>
+
+  <div className="footer-bottom">
+    © 2026 eGradTutor. Learning Simplified.
+  </div>
+</footer>
+
     </div>
   );
 };

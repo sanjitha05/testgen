@@ -14,6 +14,7 @@ const Register = () => {
       <div className="auth-form">
         <div className="auth-card">
           <h2>Create your account</h2>
+          <p className="subtitle">Join thousands of students preparing for success</p>
 
           <form>
             <input type="text" placeholder="Full Name" required />

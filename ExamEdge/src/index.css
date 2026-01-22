@@ -1,7 +1,36 @@
-body {
-  font-family: Arial;
-  margin: 0;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --soft-bg: #f8fafc;
+  --text-dark: #0f172a;
+  --text-slate: #475569;
+  --text-gray: #64748b;
+  --card-bg: #ffffff;
+  --gradient-soft: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
 }
-/* * {
-  outline: 1px solid red;
-} */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--soft-bg);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  color: var(--text-dark);
+}
+
+p, li {
+  font-size: 16px;
+  line-height: 1.7;
+}
+

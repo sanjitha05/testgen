@@ -1,12 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Instructions.css";
 import { useNavigate,useParams } from "react-router-dom";
 import exams from "../data/exams.json"; 
 import streams from "../data/streams.json";
 
-const Instructions = () => {
+const Instructions = ({ showStartButton = true }) => {
   const navigate = useNavigate();
   const { examId,streamId, testId } = useParams(); 
+  const [isFullscreen, setIsFullscreen] = useState(!!document.fullscreenElement);
+
+  useEffect(() => {
+    const handleFsChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", handleFsChange);
+    return () => document.removeEventListener("fullscreenchange", handleFsChange);
+  }, []);
+
+  const handleRequestFullscreen = () => {
+    try {
+      const docEl = document.documentElement;
+      if (docEl.requestFullscreen) {
+        docEl.requestFullscreen().catch(() => {
+          console.warn("Fullscreen request failed.");
+        });
+      }
+    } catch (err) {
+      console.warn("Fullscreen not supported.");
+    }
+  };
+
   const exam = exams.find(e => e.id === examId) ;
   
   if (!exam) {
@@ -36,6 +59,17 @@ const Instructions = () => {
 
   return (
     <div className="instructions-wrapper">
+      {!isFullscreen && (
+        <div className="fullscreen-warning-overlay">
+          <div className="warning-content">
+            <h3>Full-Screen Mode Required</h3>
+            <p>To maintain examination integrity, you must be in full-screen mode.</p>
+            <button className="return-fs-btn" onClick={handleRequestFullscreen}>
+              Return to Full-Screen
+            </button>
+          </div>
+        </div>
+      )}
       <div className="instructions-card">
   <h1 className="instructions-title">Please Read the Instructions Carefully</h1>
 
@@ -57,7 +91,7 @@ const Instructions = () => {
               The Question Palette shows the status of each question using one of the following symbols (Not Visited / Not Answered / Answered / Marked). Use 'Mark for Review' if you wish to revisit a question later.
             </li>
 
-             <section className="instructions-section palette-legend">
+             <section className="instructions-section palette-legendd">
           <h3 className="section-subtitle">Question Palette Legend</h3>
           <div className="palette-item">
             <div className="palette-box not-visited">1</div>
@@ -189,19 +223,22 @@ const Instructions = () => {
           </ul>
         </section>
 
+        {showStartButton && (
+
         <div className="instructions-footer">
           <button
             className="start-test-btn"
             onClick={() => {
               const testPath = testId 
-                ? `/demo-test/${examId}/${testId}` 
-                : `/demo-test/${examId}`;
+                ? `/mock-test/${examId}/${testId}` 
+                : `/mock-test/${examId}`;
               navigate(testPath);
             }}
           >
             Start Mock Test
           </button>
         </div>
+        )}
 
       </div>
     </div>

@@ -32,13 +32,13 @@ function App() {
         <Route path="/course/:courseId/stream/:streamId" element={<CourseDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/demo/:category" element={<DemoOtpLogin />} />
+        <Route path="/mock/:category" element={<DemoOtpLogin />} />
 
-      <Route path="/instructions/:examId/:testId" element={<Instructions />} />
-      <Route path="/instructions/:examId/:streamId/:testId" element={<Instructions />} />
+      <Route path="/instructions/:examId/:testId" element={<Instructions showStartButton={true} />} />
+      <Route path="/instructions/:examId/:streamId/:testId" element={<Instructions showStartButton={true} />} />
 
-      <Route path="/demo-test/:examId/:testId" element={<ExamPage />} />
-      <Route path="/demo-test/:examId/:streamId/:testId" element={<ExamPage />} />
+      <Route path="/mock-test/:examId/:testId" element={<ExamPage />} />
+      <Route path="/mock-test/:examId/:streamId/:testId" element={<ExamPage />} />
 
         <Route path="/solutions/:testId" element={<SolutionsPage />} />
         <Route path="/results/:testId" element={<ResultsPage />} />

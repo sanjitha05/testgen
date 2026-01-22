@@ -7,6 +7,7 @@ import {
 import "./ResultsPage.css";
 import { m } from "framer-motion";
 
+
 export default function ResultsPage() {
   const { testId } = useParams();
   const location = useLocation();
@@ -36,6 +37,8 @@ export default function ResultsPage() {
   const responses = data?.responses || {};
 
   const timesInMs = useMemo(() => resultData.some(q => (q.timeTaken || 0) > 10000), [resultData]);
+
+
 
   // Memoized calculations
 
@@ -291,6 +294,9 @@ const question = allQuestions.find(
     };
   }, [resultData, testData,flattenedQuestionsMap]);
 
+
+  
+
   // Subject-wise analysis
   const subjectAnalysis = useMemo(() => {
     if (!testData || !resultData.length) return [];
@@ -384,6 +390,131 @@ const question = allQuestions.find(
     });
   }, [resultData, testData]);
 
+
+    // ==================== TOPPER DATA (TEMP / MOCK) ====================
+   const [topperResults, setTopperResults] = useState([]);
+   useEffect(() => {
+  //  TEMP MOCK – later replace with API
+  // Each topper has same structure as `summary`
+  const mockToppers = [
+    {
+      score: 245,
+      accuracy: 86,
+      attempted: 75,
+      time: 168,
+      subject: {
+        Physics: { marks: 82, accuracy: 84 },
+        Chemistry: { marks: 88, accuracy: 90 },
+        Mathematics: { marks: 75, accuracy: 82 }
+      }
+    },
+    {
+      score: 238,
+      accuracy: 82,
+      attempted: 74,
+      time: 170,
+      subject: {
+        Physics: { marks: 80, accuracy: 82 },
+        Chemistry: { marks: 85, accuracy: 88 },
+        Mathematics: { marks: 73, accuracy: 80 }
+      }
+    },
+    {
+      score: 250,
+      accuracy: 88,
+      attempted: 75,
+      time: 165,
+      subject: {
+        Physics: { marks: 85, accuracy: 86 },
+        Chemistry: { marks: 90, accuracy: 92 },
+        Mathematics: { marks: 75, accuracy: 84 }
+      }
+    }
+  ];
+
+  setTopperResults(mockToppers);
+}, []);
+
+const topperAverage = useMemo(() => {
+  if (!topperResults.length) return null;
+
+  const avg = (key) =>
+    Math.round(
+      topperResults.reduce((s, t) => s + t[key], 0) /
+        topperResults.length
+    );
+
+  const subjectAvg = {};
+
+  ["Physics", "Chemistry", "Mathematics"].forEach(sub => {
+    subjectAvg[sub] = {
+      marks: Math.round(
+        topperResults.reduce((s, t) => s + t.subject[sub].marks, 0) /
+          topperResults.length
+      ),
+      accuracy: Math.round(
+        topperResults.reduce((s, t) => s + t.subject[sub].accuracy, 0) /
+          topperResults.length
+      )
+    };
+  });
+
+  return {
+    score: avg("score"),
+    accuracy: avg("accuracy"),
+    attempted: avg("attempted"),
+    time: avg("time"),
+    subject: subjectAvg
+  };
+}, [topperResults]);
+
+const comparisonBarData = useMemo(() => {
+  if (!topperAverage) return [];
+
+  return [
+    {
+      name: "Score",
+      You: summary.marksObtained,
+      Toppers: topperAverage.score
+    },
+    {
+      name: "Accuracy",
+      You: summary.accuracy,
+      Toppers: topperAverage.accuracy
+    },
+    {
+      name: "Questions Attempted",
+      You: summary.attempted,
+      Toppers: topperAverage.attempted
+    }
+  ];
+}, [summary, topperAverage]);
+
+const subjectComparisonData = useMemo(() => {
+  if (!topperAverage) return [];
+
+  return subjectAnalysis.map(sub => ({
+    subject: sub.subjectName,
+    You: sub.marks,
+    Toppers: topperAverage.subject[sub.subjectName]?.marks ?? 0
+  }));
+}, [subjectAnalysis, topperAverage]);
+
+
+
+    function getMarksAwarded(selected, question) {
+  if (!selected) return 0;
+
+  const { full, negative } = parseMarks(question?.marks);
+
+  if (question.qtype === "MSQ") {
+    return calculateMSQMarks(selected, question.answer, question.marks);
+  }
+
+  return selected === question.answer ? full : -negative;
+}
+
+
   const timePieData = useMemo(() => {
     if (!testData || !resultData.length) return [];
 
@@ -393,8 +524,6 @@ const question = allQuestions.find(
       let unattempted = 0;
 
       resultData.filter(filterFn).forEach(q => {
-        const section =
-  testData[q.subjectIndex].sections[q.sectionIndex];
 
     const allQuestions = flattenedQuestionsMap[`${q.subjectIndex}-${q.sectionIndex}`] || [];
 
@@ -406,16 +535,22 @@ const question = allQuestions.find(
         //   testData[q.subjectIndex].sections[q.sectionIndex].questions.find(
         //     qq => qq.question_id === q.question_id
         //   );
-
+        if (!question) return;
         const mins = timesInMs ? q.timeTaken / (1000 * 60) : q.timeTaken / 60;
 
-        if (q.selectedAnswer === null) {
-          unattempted += mins;
-        } else if (q.selectedAnswer === question.answer) {
-          correct += mins;
-        } else {
-          wrong += mins;
-        }
+            if (q.selectedAnswer === null) {
+            unattempted += mins;
+            return;
+          }
+
+          const marks = getMarksAwarded(q.selectedAnswer, question);
+
+          if (marks > 0) {
+            correct += mins;
+          } else {
+            wrong += mins;
+          }
+
       });
 
       return [
@@ -432,29 +567,73 @@ const question = allQuestions.find(
       { title: "Chemistry", data: buildTimeSplit(q => q.subjectIndex === 2) }
     ];
   }, [resultData, testData, timesInMs]);
+const subjectWiseTimeCharts = useMemo(() => {
+  if (!testData || !Array.isArray(testData)) return [];
 
-  const subjectWiseTimeCharts = useMemo(() => {
-    if (!testData || !resultData.length) return [];
+  return testData.map((subject, sIdx) => {
+    const sectionCount = subject.sections.length;
+    const data = [];
 
-    return testData.map((subject, sIdx) => {
-      const sections = subject.sections.map((section, secIdx) => ({
-        sectionName: section.SectionName,
-        data: resultData
-          .filter(
-            q => q.subjectIndex === sIdx && q.sectionIndex === secIdx
-          )
-          .map((q, i) => ({
-            name: `Q${i + 1}`,
-            time: +((timesInMs ? q.timeTaken / (1000 * 60) : q.timeTaken / 60).toFixed(2))
-          }))
-      }));
+    subject.sections.forEach((section, secIdx) => {
+      const allQuestions =
+        flattenedQuestionsMap[`${sIdx}-${secIdx}`] || [];
 
-      return {
-        subjectName: subject.SubjectName,
-        sections
-      };
+      allQuestions.forEach((q, qIdx) => {
+        const result = resultData.find(
+          r =>
+            r.subjectIndex === sIdx &&
+            r.sectionIndex === secIdx &&
+            r.question_id === q.question_id
+        );
+
+        if (!result) return;
+
+        const minutes = timesInMs
+          ? result.timeTaken / (1000 * 60)
+          : result.timeTaken / 60;
+
+        data.push({
+          name:
+            sectionCount === 1
+              ? `Q${qIdx + 1}`
+              : `${section.SectionName}-Q${qIdx + 1}`,
+          time: +minutes.toFixed(2),
+          section: section.SectionName
+        });
+      });
     });
-  }, [resultData, testData, timesInMs]);
+
+    return {
+      subjectName: subject.SubjectName,
+      sectionCount,
+      data
+    };
+  });
+}, [testData, resultData, flattenedQuestionsMap, timesInMs]);
+
+
+  // const subjectWiseTimeCharts = useMemo(() => {
+  //   if (!testData || !resultData.length) return [];
+
+  //   return testData.map((subject, sIdx) => {
+  //     const sections = subject.sections.map((section, secIdx) => ({
+  //       sectionName: section.SectionName,
+  //       data: resultData
+  //         .filter(
+  //           q => q.subjectIndex === sIdx && q.sectionIndex === secIdx
+  //         )
+  //         .map((q, i) => ({
+  //           name: `Q${i + 1}`,
+  //           time: +((timesInMs ? q.timeTaken / (1000 * 60) : q.timeTaken / 60).toFixed(2))
+  //         }))
+  //     }));
+
+  //     return {
+  //       subjectName: subject.SubjectName,
+  //       sections
+  //     };
+  //   });
+  // }, [resultData, testData, timesInMs]);
 
   // Subject-wise datasets for the three summary charts
   const subjectMetrics = useMemo(() => {
@@ -475,6 +654,77 @@ const question = allQuestions.find(
       accuracy: subjectAnalysis.map(s => ({ name: s.subjectName, accuracy: s.accuracy }))
     };
   }, [subjectAnalysis, timesInMs]);
+
+  
+const attemptAnalysis = useMemo(() => {
+  if (!testData || !resultData.length) return [];
+
+  const init = () => ({
+    perfect: 0,
+    wasted: 0,
+    overtime: 0,
+    confused: 0
+  });
+
+  const overall = init();
+  const subjectMap = {};
+
+  testData.forEach(s => {
+    subjectMap[s.SubjectName] = init();
+  });
+
+  resultData.forEach(q => {
+    if (!q.question_id) return;
+
+    const subjectName = testData[q.subjectIndex].SubjectName;
+    const questions =
+      flattenedQuestionsMap[`${q.subjectIndex}-${q.sectionIndex}`] || [];
+
+    const question = questions.find(
+      qq => qq.question_id === q.question_id
+    );
+    if (!question) return;
+
+    const timeTaken = timesInMs
+      ? q.timeTaken / 1000
+      : q.timeTaken;
+
+    const allotted =
+      Number(question["time-allotted"]) || null;
+
+    const attempted = q.selectedAnswer !== null;
+    const correct = attempted && isAnswerCorrect(
+      q.selectedAnswer,
+      question.answer,
+      question.qtype
+    );
+
+    const overTime =
+      allotted !== null && timeTaken > allotted;
+
+    let bucket = null;
+
+    if (attempted && correct && !overTime) bucket = "perfect";
+    else if (attempted && !correct && !overTime) bucket = "wasted";
+    else if (attempted && overTime) bucket = "overtime";
+    else if (!attempted && overTime) bucket = "confused";
+
+    if (!bucket) return;
+
+    overall[bucket]++;
+    subjectMap[subjectName][bucket]++;
+  });
+
+  return [
+    { subject: "Overall", ...overall },
+    ...Object.entries(subjectMap).map(([subject, data]) => ({
+      subject,
+      ...data
+    }))
+  ];
+}, [resultData, testData, flattenedQuestionsMap, timesInMs]);
+
+
 
   // ==================== CONDITIONAL RETURNS (AFTER ALL HOOKS) ====================
   if (loading) {
@@ -507,17 +757,6 @@ const question = allQuestions.find(
     if (seconds < 60) return `${seconds} s`;
     return `${Number(minutes).toFixed(1)} min`;
   };
-  function getMarksAwarded(selected, question) {
-  if (!selected) return 0;
-
-  const { full, negative } = parseMarks(question?.marks);
-
-  if (question.qtype === "MSQ") {
-    return calculateMSQMarks(selected, question.answer, question.marks);
-  }
-
-  return selected === question.answer ? full : -negative;
-}
 
 
   const COLORS = ["#4CAF50", "#FF4C4C", "#A0A0A0"];
@@ -554,6 +793,11 @@ const scoreStripData = [
         : "±",
   })),
 ];
+const showSectionColumn = testData.some(
+  subject => subject.sections.length > 1
+);
+
+
 
 
   // ==================== RENDER ====================
@@ -617,15 +861,15 @@ const scoreStripData = [
       </p>
 
       <div className="overview-grid">
-        {/* SCORE */}
-        <div className="overview-card orange">
+            {/* ACCURACY */}
+        <div className="overview-card green">
           <div>
-            <h4>Score</h4>
-            <p>Overall marks scored in this test</p>
+            <h4>Accuracy</h4>
+            <p>Overall accuracy of the test</p>
           </div>
-          <span>{summary.marksObtained}/{summary.maxMarks}</span>
+          <span>{summary.accuracy}%</span>
         </div>
-
+        
         {/* ATTEMPTED */}
         <div className="overview-card blue">
           <div>
@@ -635,14 +879,7 @@ const scoreStripData = [
           <span>{summary.attempted}/{summary.total}</span>
         </div>
 
-        {/* ACCURACY */}
-        <div className="overview-card green">
-          <div>
-            <h4>Accuracy</h4>
-            <p>Overall accuracy of the test</p>
-          </div>
-          <span>{summary.accuracy}%</span>
-        </div>
+    
 
         {/* TIME TAKEN */}
         <div className="overview-card yellow">
@@ -674,6 +911,9 @@ const scoreStripData = [
         </div>
       </div>
 
+     
+
+
       {/* SUBJECT SUMMARY CHARTS */}
       <h2>Subject-wise Metrics</h2>
 
@@ -690,7 +930,7 @@ const scoreStripData = [
             ))}
           </div>
 
-          <ResponsiveContainer width="100%" height={240}>
+          <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie data={subjectMetrics.time} dataKey="value" nameKey="name" outerRadius={80} label={({ name, value }) => `${Math.round(value)} min`}>
                 {subjectMetrics.time.map((entry, idx) => (
@@ -860,7 +1100,7 @@ const scoreStripData = [
       </div>
 
 
-      <h2>Time Spent per Question (Subject & Section-wise)</h2>
+      {/* <h2>Time Spent per Question (Subject & Section-wise)</h2>
 
       {subjectWiseTimeCharts.map((subject, sIdx) => (
         <div key={sIdx} className="subject-chart-wrapper">
@@ -892,7 +1132,50 @@ const scoreStripData = [
             ))}
           </div>
         </div>
-      ))}
+      ))} */}
+
+      <h2>Time Spent per Question (Subject-wise)</h2>
+
+{subjectWiseTimeCharts.map((subject, sIdx) => (
+  <div key={sIdx} className="subject-chart-wrapper">
+    <h2 className="subject-title">{subject.subjectName}</h2>
+
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={subject.data}>
+        <XAxis
+          dataKey="name"
+          interval={0}
+          angle={-35}
+          textAnchor="end"
+        />
+        <YAxis
+          label={{
+            value: "Time (minutes)",
+            angle: -90,
+            position: "insideLeft"
+          }}
+        />
+        <Tooltip
+          formatter={(value, _, props) =>
+            [`${value} min`, props.payload.section]
+          }
+        />
+        <Bar
+          dataKey="time"
+          radius={[6, 6, 0, 0]}
+          fill="#2563EB"
+        />
+      </BarChart>
+    </ResponsiveContainer>
+
+    {subject.sectionCount > 1 && (
+      <p className="section-hint">
+        Sections shown as prefixes (A-Q1, B-Q1, etc.)
+      </p>
+    )}
+  </div>
+))}
+
 
       <h2>Time Distribution by Attempt Status</h2>
 
@@ -938,6 +1221,157 @@ const scoreStripData = [
         ))}
       </div>
 
+
+       {topperAverage && (
+  <>
+    <h2 className="results-title">You vs Topper Average</h2>
+    <p className="results-subtitle">
+      Comparison with average performance of top 3 students
+    </p>
+
+    {/* KPI CARDS */}
+    <div className="overview-grid">
+      <div className="overview-card blue">
+        <h4>Your Score</h4>
+        <span>{summary.marksObtained}</span>
+      </div>
+
+      <div className="overview-card green">
+        <h4>Topper Avg Score</h4>
+        <span>{topperAverage.score}</span>
+      </div>
+
+      <div className="overview-card purple">
+        <h4>Accuracy Gap</h4>
+        <span>{topperAverage.accuracy - summary.accuracy}%</span>
+      </div>
+    </div>
+
+    {/* OVERALL COMPARISON BAR */}
+    <div className="metric-card">
+      <h3>Overall Performance Comparison</h3>
+      <ResponsiveContainer width="100%" height={260}>
+        <BarChart data={comparisonBarData}>
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="You" fill="#2563EB" />
+          <Bar dataKey="Toppers" fill="#16a34a" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+
+    {/* SUBJECT-WISE COMPARISON */}
+    <div className="metric-card">
+      <h3>Subject-wise Score Comparison</h3>
+      <ResponsiveContainer width="100%" height={280}>
+        <BarChart data={subjectComparisonData}>
+          <XAxis dataKey="subject" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="You" fill="#3b82f6" />
+          <Bar dataKey="Toppers" fill="#22c55e" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+
+    {/* INSIGHT BOX */}
+    <div className="analysis-section">
+      <h2>Key Insights</h2>
+      <ul>
+        <li>
+          You are <b>{topperAverage.score - summary.marksObtained}</b> marks
+          behind topper average.
+        </li>
+        <li>
+          Biggest subject gap:{" "}
+          <b>
+            {
+              subjectComparisonData.sort(
+                (a, b) => (b.Toppers - b.You) - (a.Toppers - a.You)
+              )[0]?.subject
+            }
+          </b>
+        </li>
+        <li>
+          Improve accuracy by{" "}
+          <b>{topperAverage.accuracy - summary.accuracy}%</b> to reach topper
+          zone.
+        </li>
+      </ul>
+    </div>
+  </>
+)}
+
+<h2>Attempt Analysis</h2>
+<p className="section-subtitle">
+  Know how you're solving questions in your attempted test. Go through the definitions first.
+</p>
+
+<div className="attempt-definitions">
+  <div className="def-item perfect">
+    <span className="def-icon">✔</span>
+    <div>
+      <strong>PERFECT</strong>
+      <p>Correct attempt solved in time</p>
+    </div>
+  </div>
+
+  <div className="def-item wasted">
+    <span className="def-icon">✖</span>
+    <div>
+      <strong>WASTED</strong>
+      <p>Incorrect attempt solved very quickly</p>
+    </div>
+  </div>
+
+  <div className="def-item overtime">
+    <span className="def-icon">⏱</span>
+    <div>
+      <strong>OVERTIME</strong>
+      <p>Spent more than the allotted time</p>
+    </div>
+  </div>
+
+  <div className="def-item confused">
+    <span className="def-icon">😵</span>
+    <div>
+      <strong>CONFUSED</strong>
+      <p>Unattempted & spent more than allotted time</p>
+    </div>
+  </div>
+</div>
+
+
+<div className="attempt-table">
+  <div className="attempt-header">
+    <span>SUBJECT</span>
+    <span className="perfect">✔ PERFECT</span>
+    <span className="wasted">✖ WASTED</span>
+    <span className="overtime">⏱ OVERTIME</span>
+    <span className="confused">😵 CONFUSED</span>
+  </div>
+
+  {attemptAnalysis.map((row, idx) => (
+    <div
+      key={idx}
+      className={`attempt-row ${row.subject === "Overall" ? "overall" : ""}`}
+    >
+      <div className="attempt-subject">
+        {row.subject === "Overall" ? "✔✔ Overall" : row.subject}
+      </div>
+
+      <div className="attempt-cell perfect">{row.perfect}</div>
+      <div className="attempt-cell wasted">{row.wasted}</div>
+      <div className="attempt-cell overtime">{row.overtime}</div>
+      <div className="attempt-cell confused">{row.confused}</div>
+    </div>
+  ))}
+</div>
+
+
       {/* DETAILED QUESTION TABLE */}
       <h2>Question-wise Details</h2>
       <table className="analysis-table">
@@ -945,12 +1379,16 @@ const scoreStripData = [
           <tr>
             <th>Q No</th>
             <th>Subject</th>
-            <th>Section</th>
+            {showSectionColumn && <th>Section</th>}
+            <th>Chapter Name</th>
+            <th>Topic Name</th>
+            <th>Difficulty</th>
+            <th>Time Allotted</th>
+            <th>Time Taken</th>
             <th>Selected Answer</th>
             <th>Correct Answer</th>
-            <th>Marks Awarded</th>
+            {/* <th>Marks Awarded</th> */}
             <th>Status</th>
-            <th>Time</th>
           </tr>
         </thead>
         <tbody>
@@ -984,12 +1422,20 @@ const scoreStripData = [
               <tr key={idx}>
                 <td>{q.question_id}</td>
                 <td>{testData[q.subjectIndex].SubjectName}</td>
-                <td>{testData[q.subjectIndex].sections[q.sectionIndex].SectionName}</td>
-                <td>{formatAnswer(q.selectedAnswer, question.qtype)}</td>
-                <td>{formatAnswer(question.answer, question.qtype)}</td>
-                 <td>{getMarksAwarded(q.selectedAnswer, question)}</td>
-                <td>{status}</td>
+                  {showSectionColumn && (
+                    <td>
+                      {testData[q.subjectIndex].sections[q.sectionIndex].SectionName}
+                    </td>
+                  )}
+               <td>{question.chapter || "N/A"}</td>
+                <td>{question.topic || "N/A"}</td>
+                <td>{question.difficulty}</td>
+                <td>{formatTime(question["time-allotted"])}</td>
                 <td>{formatTime(q.timeTaken)}</td>
+                 <td>{formatAnswer(q.selectedAnswer, question.qtype)}</td>
+                <td>{formatAnswer(question.answer, question.qtype)}</td>
+                 {/* <td>{getMarksAwarded(q.selectedAnswer, question)}</td> */}
+                <td>{status}</td>
               </tr>
             );
           })}

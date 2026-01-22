@@ -7,6 +7,7 @@ import courses from "../data/courses.json";
 import courseStreams from "../data/courseStreams.json";
 import modules from "../data/modules.json";
 import instructors from "../data/instructors.json";
+import Navbar from "../components/Navbar";
 import examVisual from "../assets/course_card.png"
 import "./ExamDetails.css";
 
@@ -42,6 +43,7 @@ const ExamDetails = () => {
 
 return (
   <div className="exam-layout">
+    <Navbar />
 
     {/* LEFT – SCROLLABLE CONTENT */}
     <div className="exam-scroll-content">
@@ -75,12 +77,23 @@ return (
       {/* CARD 2 – EXAM PATTERN */}
       <div className="overview-cardd">
         <h3>Exam Pattern</h3>
-
         <p>
           <strong>Subjects:</strong>{" "}
-          {exam.examPattern.subjects.join(", ")}
+          {Array.isArray(
+            activeStream
+              ? activeStream?.examPattern?.subjects
+              : exam?.examPattern?.subjects
+          )
+            ? (activeStream
+                ? activeStream.examPattern.subjects
+                : exam.examPattern.subjects
+              )
+                .map(s => (typeof s === "string" ? s : s.name))
+                .join(", ")
+            : "-"}
         </p>
 
+      
         <p>
           <strong>Total Questions:</strong>{" "}
           {exam.examPattern.totalQuestions}

@@ -14,6 +14,7 @@ const Login = () => {
       <div className="auth-form">
         <div className="auth-card">
           <h2>Log in to your account</h2>
+          <p className="subtitle">Enter your credentials to access your dashboard</p>
 
           <form>
             <input type="email" placeholder="Email" required />

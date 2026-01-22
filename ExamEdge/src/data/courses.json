@@ -8,6 +8,7 @@
   "courseType": "Full Course",
 
   "shortDescription": "Complete JEE Main preparation from basics to advanced with structured lectures, tests, and analytics.",
+  "description": "Master the JEE Main syllabus with our most comprehensive course designed by top educators. This program covers Physics, Chemistry, and Mathematics in depth, providing you with everything you need to crack the exam. You will get access to structured video lectures, extensive practice questions, and full-length mock tests that simulate the real exam environment. Our advanced analytics will help you identify your strengths and weaknesses, ensuring you are always on the right track to success.",
 
 
   "subjects": "Physics, Chemistry, Mathematics",
@@ -32,7 +33,7 @@
     "title": "JEE Main Crash Learning Course",
     "moduleId": "complete-preparation-program",
     "courseType": "Crash Course",
-
+    "description": "Short on time? Our JEE Main Crash Learning Course is designed for rapid revision and maximum impact. We focus on high-weightage topics and provide strategic problem-solving techniques to help you boost your score in the final weeks. This course includes intensive video sessions, targeted practice papers, and quick-revision notes tailored for students who need a fast-track route to success.",
     "subjects": "High-Weightage JEE Main Topics",
     "totalTopics": 80,
     "totalVideos": 120,
@@ -351,7 +352,7 @@
     "moduleId": "complete-preparation-program",
     "deliveryType": "Complete Preparation Program",
     "courseType": "Full Course",
-
+    "description": "Prepare for the medical entrance exam with confidence. Our NEET UG Complete Preparation Program is tailored to the latest NCERT syllabus, ensuring a solid foundation in Biology, Physics, and Chemistry. With expert-led video lectures, chapter-wise mock tests, and detailed performance analysis, we help you master every concept and improve your speed and accuracy for the big day.",
     "subjects": "Biology, Physics, Chemistry",
     "totalTopics": 165,
     "totalVideos": 300,

@@ -61,7 +61,7 @@
   "conductedBy": "IIT",
   "examMonths": "May / June",
   "about": "JEE Advanced is a highly competitive national-level engineering entrance examination conducted for admission into the Indian Institutes of Technology (IITs), focusing on deep conceptual understanding and advanced problem-solving skills.",
-  "eligibility": "Top JEE Main qualified students as per the eligibility criteria announced by the conducting IIT",
+  "eligibility": "Top JEE Main qualified students",
   "examPattern": {
     "subjects": [
       {
@@ -94,7 +94,7 @@
     ],
     "totalQuestions": 90,
     "marks": 360,
-    "duration": "Two papers of 3 Hours each (Paper 1 & Paper 2)",
+    "duration": "Two papers of 2 Hours each (Paper 1 & Paper 2)",
     "negativeMarking": "Yes"
   },
   "speciality": [
@@ -166,7 +166,7 @@
   "conductedBy": "BITS Pilani",
   "examMonths": "May / June",
   "about": "BITSAT is a computer-based entrance test for admission to undergraduate programs at BITS campuses (Pilani, Goa, Hyderabad).",
-  "eligibility": "Class 12 pass with required minimum marks in PCM/PCB as per BITS admission criteria (usually 75% aggregate in specified subjects)",
+  "eligibility": "Class 12 pass with required minimum marks in PCM/PCB",
   "languages": ["English"],
   "examPattern": {
     "subjects": [

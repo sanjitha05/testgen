@@ -204,257 +204,214 @@ const getStatus = (q, sectionIndex) => {
 
   return (
     <div className="solutions-page">
-      {/* LEFT SIDEBAR */}
-      <aside className="solutions-sidebar">
-        <select
-        className="subject-select"
-          value={activeSubjectIndex}
-          onChange={(e) => {
-            setActiveSubjectIndex(Number(e.target.value));
-            setActiveSectionIndex(0);
-            setActiveQuestionIndex(0);
-          }}
-        >
-          {testData.map((s, i) => (
-            <option key={i} value={i}>
-              {s.SubjectName}
-            </option>
-          ))}
-        </select>
+      <header className="top-bar">
+        <div className="exam-title">
+          {testId.replace(/_/g, " ").toUpperCase()} - SOLUTIONS
+        </div>
+        <div className="top-bar-right">
+          <div className="candidate-info">
+            <div className="candidate-details">
+              <span className="candidate-name">CANDIDATE NAME</span>
+              <span className="subject-name">Subject: {subject.SubjectName}</span>
+            </div>
+            <div className="candidate-photo">
+              👤
+            </div>
+          </div>
+        </div>
+      </header>
 
-        <div className="question-nav">
-
-          {subject.sections.map((sec, secIdx) => {
-  const flatQuestions = getAllQuestionsFromSection(sec);
-
-  return (
-    <div key={secIdx}>
-      <div className="section-heading">
-        {sec.SectionName}
-      </div>
-
-      {flatQuestions.map((q, qIdx) => (
-        <button
-          key={`${q.question_id}-${qIdx}`}
-          className={`q-nav-btn ${getStatus(q, secIdx)} ${
-            secIdx === activeSectionIndex &&
-            qIdx === activeQuestionIndex
-              ? "active"
-              : ""
-          }`}
-          onClick={() => {
-            setActiveSectionIndex(secIdx);
-            setActiveQuestionIndex(qIdx);
-          }}
-        >
-          Question {qIdx + 1}
-        </button>
-      ))}
-    </div>
-  );
-})}
-
-          {/* {subject.sections.map((sec, secIdx) => (
-            <div key={secIdx}>
-              <div className="section-heading">
-                {sec.SectionName}
-              </div>
-
-             
-
-            {flatQuestions.map((q, qIdx) => (
-              <button
-                key={`${q.question_id}-${qIdx}`}
-                className={`q-nav-btn ${getStatus(q, secIdx)} ${
-                  secIdx === activeSectionIndex &&
-                  qIdx === activeQuestionIndex
-                    ? "active"
-                    : ""
-                }`}
-                onClick={() => {
-                  setActiveSectionIndex(secIdx);
-                  setActiveQuestionIndex(qIdx);
-                }}
-              >
-                Question {qIdx + 1}
-              </button>
-            ))}
-
-
-              {/* {sec.questions.map((q, qIdx) => (
+      <div className="solutions-body">
+        {/* MAIN CONTENT (LEFT) */}
+        <main className="solutions-content">
+          <div className="subject-nav-tabs">
+            <div className="subject-tabs">
+              {testData.map((s, i) => (
                 <button
-                  key={q.question_id}
-                  className={`q-nav-btn ${getStatus(q, secIdx)} ${
-                    secIdx === activeSectionIndex &&
-                    qIdx === activeQuestionIndex
-                      ? "active"
-                      : ""
-                  }`}
+                  key={i}
+                  className={`tab-btn ${i === activeSubjectIndex ? "active" : ""}`}
                   onClick={() => {
-                    setActiveSectionIndex(secIdx);
-                    setActiveQuestionIndex(qIdx);
+                    setActiveSubjectIndex(i);
+                    setActiveSectionIndex(0);
+                    setActiveQuestionIndex(0);
                   }}
                 >
-                  Question {qIdx + 1}
+                  {s.SubjectName}
                 </button>
-              ))} */}
-           
-        </div>
-      </aside>
-
-      {/* MAIN CONTENT */}
-      <main className="solutions-content">
-        <h3>
-          Question {activeQuestionIndex + 1} •{" "}
-          {userAnswer == null
-          ? "Unattempted"
-          : isCorrectAnswer(userAnswer, correctAnswer, question.qtype)
-          ? "Correct"
-          : "Incorrect"}
-
-        </h3>
-
-        {/* PASSAGE / PARAGRAPH */}
-        {question.passageImgName && (
-          <div className="passage-block">
-            <h4>Read the passage carefully:</h4>
-            <img
-              src={question.passageImgName}
-              alt="passage"
-              className="passage-image"
-            />
+              ))}
+            </div>
           </div>
-        )}
 
+          <div className="section-nav-info">
+            <div className="section-tabs">
+              {subject.sections.map((sec, i) => (
+                <button
+                  key={i}
+                  className={`section-tab-btn ${i === activeSectionIndex ? "active" : ""}`}
+                  onClick={() => {
+                    setActiveSectionIndex(i);
+                    setActiveQuestionIndex(0);
+                  }}
+                >
+                  {sec.SectionName}
+                </button>
+              ))}
+            </div>
+          </div>
 
-        {/* QUESTION IMAGE */}
-        {question.questionImgName && (
-          <img
-            src={question.questionImgName}
-            alt="question"
-            className="question-image"
-          />
-        )}
+          <div className="question-container">
+            <div className="question-header">
+              <span className="question-number">Question No. {activeQuestionIndex + 1}</span>
+              <div className="question-meta">
+                <span className={`status-badge ${userAnswer == null ? "unattempted" : isCorrectAnswer(userAnswer, correctAnswer, question.qtype) ? "correct" : "wrong"}`}>
+                  {userAnswer == null ? "Not Attempted" : isCorrectAnswer(userAnswer, correctAnswer, question.qtype) ? "Correct" : "Incorrect"}
+                </span>
+                <span className="q-type">{question.qtype}</span>
+              </div>
+            </div>
 
+            <div className="question-scroll-area">
+              {/* PASSAGE / PARAGRAPH */}
+              {question.passageImgName && (
+                <div className="passage-block">
+                  <img src={question.passageImgName} alt="passage" className="passage-image" />
+                </div>
+              )}
 
-         {Array.isArray(question.options) && question.options.length > 0 && (
-           <div className="optionss">
-             {question.options.map((opt) => {
-          const userSet =
-            question.qtype === "MSQ"
-              ? normalizeMSQ(userAnswer)
-              : [String(userAnswer).toLowerCase()];
+              {/* QUESTION IMAGE */}
+              {question.questionImgName && (
+                <img src={question.questionImgName} alt="question" className="question-image" />
+              )}
 
-          const correctSet = normalizeMSQ(question.answer);
+              {Array.isArray(question.options) && question.options.length > 0 && (
+                <div className="options-container">
+                  {question.options.map((opt) => {
+                    const userSet = question.qtype === "MSQ" ? normalizeMSQ(userAnswer) : [String(userAnswer).toLowerCase()];
+                    const correctSet = normalizeMSQ(question.answer);
+                    const isUser = userSet.includes(String(opt.option_index).toLowerCase());
+                    const isCorrect = correctSet.includes(String(opt.option_index).toLowerCase());
 
-          const isUser = userSet.includes(String(opt.option_index).toLowerCase());
-          const isCorrect = correctSet.includes(String(opt.option_index).toLowerCase());
+                    let optionClass = "option-item";
+                    if (isUser && isCorrect) optionClass += " correct-choice";
+                    else if (isUser && !isCorrect) optionClass += " wrong-choice";
+                    else if (!isUser && isCorrect) optionClass += " missed-correct";
 
-          const cls = [
-            "option",
-            isUser && isCorrect ? "selected-correct" : "",
-            isUser && !isCorrect ? "selected-wrong" : "",
-            !isUser && isCorrect ? "correct-unselected" : ""
-          ].join(" ");
+                    return (
+                      <div key={opt.option_id} className={optionClass}>
+                        <div className="option-marker">
+                          <input type={question.qtype === "MSQ" ? "checkbox" : "radio"} checked={isUser} readOnly />
+                        </div>
+                        <div className="option-content">
+                          {opt.optionImgName ? <img src={opt.optionImgName} alt="option" /> : <span>{opt.optionText ?? opt.option_caption}</span>}
+                        </div>
+                        {isUser && isCorrect && <span className="choice-label correct">Your Correct Answer</span>}
+                        {isUser && !isCorrect && <span className="choice-label wrong">Your Wrong Answer</span>}
+                        {!isUser && isCorrect && <span className="choice-label actual">Correct Answer</span>}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
-          return (
-            <label key={opt.option_id} className={cls}>
-              <div className="optionn-main">
-                <input
-                  type={question.qtype === "MSQ" ? "checkbox" : "radio"}
-                  checked={isUser}
-                  readOnly
-                />
+              {/* SOLUTION SECTION */}
+              <div className="solution-section">
+                <h4 className="solution-title">Step-by-Step Solution</h4>
+                <div className="answer-summary">
+                  <div className="summary-item">
+                    <span className="label">Your Answer:</span>
+                    <span className={`value ${userAnswer == null ? "" : isCorrectAnswer(userAnswer, correctAnswer, question.qtype) ? "text-success" : "text-danger"}`}>
+                      {formatAnswer(userAnswer, question.qtype)}
+                    </span>
+                  </div>
+                  <div className="summary-item">
+                    <span className="label">Correct Answer:</span>
+                    <span className="value text-success">{formatAnswer(correctAnswer, question.qtype)}</span>
+                  </div>
+                </div>
 
-                {opt.optionImgName ? (
-                  <img src={opt.optionImgName} alt="option" />
-                ) : (
-                  <span>{opt.optionText ?? opt.option_caption}</span>
+                {question.solution && (
+                  <div className="solution-image-container">
+                    <img src={question.solution} alt="solution" className="solution-image" />
+                  </div>
+                )}
+
+                {question.vsoln && (
+                  <div className="video-solution-container">
+                    <h5 className="video-solution-label">Video Explanation</h5>
+                    <div className="video-thumb" onClick={() => { setVideoSrc(getEmbedUrl(question.vsoln)); setShowVideo(true); }}>
+                      <img className="video-thumb-img" src={getVideoThumbnail(question.vsoln)} alt="Video solution" />
+                      <div className="video-thumb-overlay">
+                        <div className="video-thumb-play">▶</div>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
-            </label>
-          );
-        })}
-
-           </div>
-         )}
-
-
-        {/* ANSWER BOXES */}
-        <div className="answer-boxes">
-          <div className="answer-box user">
-            <h4>Your Answer</h4>
-            <p>{formatAnswer(userAnswer, question.qtype)}</p>
+            </div>
           </div>
 
-          <div className="answer-box correct">
-            <h4>Correct Answer</h4>
-            <p>{formatAnswer(correctAnswer, question.qtype)}</p>
+          <div className="solutions-footer">
+            <button
+              className="footer-btn prev"
+              disabled={activeQuestionIndex === 0}
+              onClick={() => setActiveQuestionIndex(prev => prev - 1)}
+            >
+              &lt; Previous
+            </button>
+            <button
+              className="footer-btn next"
+              disabled={activeQuestionIndex === questions.length - 1}
+              onClick={() => setActiveQuestionIndex(prev => prev + 1)}
+            >
+              Next &gt;
+            </button>
+          </div>
+        </main>
+
+        {/* RIGHT SIDEBAR (PALETTE) */}
+        <aside className="solutions-sidebar">
+          <div className="palette-header">
+            Question Palette
+          </div>
+          <div className="question-palette">
+            {questions.map((q, idx) => (
+              <button
+                key={q.question_id}
+                className={`palette-btn ${getStatus(q, activeSectionIndex)} ${idx === activeQuestionIndex ? "active" : ""}`}
+                onClick={() => setActiveQuestionIndex(idx)}
+              >
+                {idx + 1}
+              </button>
+            ))}
+          </div>
+
+          <div className="palette-legend">
+            <div className="legend-item">
+              <span className="legend-box correct"></span>
+              <span className="legend-text">Correct</span>
+            </div>
+            <div className="legend-item">
+              <span className="legend-box wrong"></span>
+              <span className="legend-text">Incorrect</span>
+            </div>
+            <div className="legend-item">
+              <span className="legend-box unattempted"></span>
+              <span className="legend-text">Not Attempted</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      {showVideo && (
+        <div className="video-modal" onClick={() => setShowVideo(false)}>
+          <div className="video-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="video-close" onClick={() => setShowVideo(false)}>×</button>
+            <div className="video-wrapper">
+              <iframe src={videoSrc} frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen title="video-solution"></iframe>
+            </div>
           </div>
         </div>
-
-        {/* SOLUTION IMAGE */}
-        {question.solution && (
-          <div className="solution-block">
-            <h4>Step-by-Step Solution</h4>
-            <img
-              src={question.solution}
-              alt="solution"
-              className="solution-image"
-            />
-          </div>
-        )}
-
-        {question.vsoln && (
-              <div className="video-solution-label">Video Solution</div>
-
-        )}
-        {question.vsoln && (
-          <div
-            className="video-thumb"
-            role="button"
-           tabIndex={0}
-            onClick={() => {
-              setVideoSrc(getEmbedUrl(question.vsoln));
-              setShowVideo(true);
-            }}
-            onKeyDown={(e) => e.key === "Enter" && (setVideoSrc(getEmbedUrl(question.vsoln)), setShowVideo(true))}
-            aria-label="Watch video solution"
-          >
-            {getVideoThumbnail(question.vsoln) ? (
-              <img
-                src={getVideoThumbnail(question.vsoln)}
-                alt="video thumbnail"
-                className="video-thumb-img"
-              />
-            ) : (
-              <div className="video-thumb-placeholder" aria-hidden="true" />
-            )}
-            <div className="video-thumb-overlay">
-              <div className="video-thumb-play">▶</div>
-            </div>
-          </div>
-          
-        )}
-
- {showVideo && (
-          <div className="video-modal" onClick={() => setShowVideo(false)}>
-           <div className="video-modal-content" onClick={(e) => e.stopPropagation()}>
-              <button className="video-close" onClick={() => setShowVideo(false)}>×</button>
-              <div className="video-wrapper">
-                <iframe
-                  src={videoSrc}
-                  title="Video Solution"
-                  frameBorder="0"
-                  allow="autoplay; encrypted-media; fullscreen"
-                  allowFullScreen
-                ></iframe>
-              </div>
-            </div>
-          </div>
-        )}
-
-      </main>
+      )}
     </div>
   );
 }

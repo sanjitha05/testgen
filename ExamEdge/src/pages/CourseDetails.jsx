@@ -3,28 +3,17 @@ import { useParams, useNavigate } from "react-router-dom";
 import courses from "../data/courses.json";
 import courseStreams from "../data/courseStreams.json";
 import instructors from "../data/instructors.json";
+import Navbar from "../components/Navbar";
 import exams from "../data/exams.json";
 import modules from "../data/modules.json";
 import examVisual from "../assets/online_lecturee.png";
 import instructor1 from "../assets/instructor_image.jpg"
 import "./CourseDetails.css";
+import { ins } from "framer-motion/client";
 
 const CourseDetails = () => {
   const { courseId,streamId } = useParams();
   const navigate = useNavigate();
-// const baseCourse = courses.find(c => c.id === courseId);
-// if (!baseCourse) return <p>Course not found</p>;
-
-// const streamCourse = streamId
-//   ? courseStreams.find(
-//       cs => cs.courseId === courseId && cs.streamId === streamId
-//     )
-//   : null;
-
-// const course = {
-//   ...baseCourse,
-//   ...(streamCourse || {})
-// };
 const baseCourse = courses.find(c => c.id === courseId);
 const standaloneCourse = courseStreams.find(cs => cs.id === courseId); // courseId might be a stream-course id
 const streamCourse = streamId
@@ -47,21 +36,24 @@ if (!course) return <p>Course not found</p>;
  
 
   const courseDetails = [
-  { label: "Exam", value: exam?.name || course.examId },
-  { label: "Course Type", value: course.courseType },
-  { label: "Subjects", value: formatSubjects(course.subjects) },
-  { label: "Difficulty", value: course.difficultyLevel },
-  { label: "Best For", value: course.bestFor },
-  { label: "Validity", value: course.validity },
-  { label: "Total Topics", value: course.totalTopics },
-  { label: "Total Videos", value: course.totalVideos },
-  { label: "Total Questions", value: course.totalQuestions },
-  { label: "Total Tests", value: course.totalTests }
+  { label: "Exam", value: exam?.name || course.examId, icon: "🎓" },
+  { label: "Course Type", value: course.courseType, icon: "🏷️" },
+  { label: "Subjects", value: formatSubjects(course.subjects), icon: "📖" },
+  { label: "Difficulty", value: course.difficultyLevel, icon: "⚡" },
+  { label: "Best For", value: course.bestFor, icon: "🎯" },
+  { label: "Validity", value: course.validity, icon: "⏳" },
+  { label: "Total Topics", value: course.totalTopics, icon: "📚" },
+  { label: "Total Videos", value: course.totalVideos, icon: "🎥" },
+  { label: "Total Questions", value: course.totalQuestions, icon: "❓" },
+  { label: "Total Tests", value: course.totalTests, icon: "🧪" }
 ].filter(item => item.value);
 
 
   return (
     <div className="course-details-page">
+      <Navbar />
+      <div className="bg-shape-1"></div>
+      <div className="bg-shape-2"></div>
 
       {/* HERO */}
       <div className="course-hero">
@@ -84,15 +76,17 @@ if (!course) return <p>Course not found</p>;
       {course.shortDescription}
     </p>
   )}
-
-  <p className="hero-instructor">
+  {instructor && (
+    <p className="hero-instructor">
     By {instructor?.name}
-  </p>
+  </p> )}
+  
 
   <div className="hero-stats">
     {course.totalVideos && <span>🎥 {course.totalVideos} Videos</span>}
     {course.totalTopics && <span>📚 {course.totalTopics} Topics</span>}
     {course.totalTests && <span>🧪 {course.totalTests} Tests</span>}
+     {course.totalQuestions && <span>❓ {course.totalQuestions} Questions</span>}
   </div>
 
   <button
@@ -114,24 +108,40 @@ if (!course) return <p>Course not found</p>;
 
         {/* LEFT */}
         <div className="course-main-details">
+          
+          {course.description && (
+            <section className="info-card description-card">
+              <h2>About this Course</h2>
+              <p className="full-description">{course.description}</p>
+            </section>
+          )}
 
           {/* COURSE + INSTRUCTOR */}
           <div className="details-row">
 
             <section className="info-card">
-        <h2>Course Details</h2>
+        <h2>What's Included</h2>
 
-        {courseDetails.map((item, index) => (
-            <p key={index}>
-            <strong>{item.label}:</strong> {item.value}
-            </p>
-        ))}
-
-        {course.performanceTracking && (
-            <p>
-            <strong>Performance Tracking:</strong> Available
-            </p>
-        )}
+        <div className="course-stats-grid">
+          {courseDetails.map((item, index) => (
+              <div key={index} className="stat-card">
+                <span className="stat-icon">{item.icon}</span>
+                <div className="stat-info">
+                  <span className="stat-label">{item.label}</span>
+                  <span className="stat-value">{item.value}</span>
+                </div>
+              </div>
+          ))}
+          {course.performanceTracking && (
+              <div className="stat-card">
+                <span className="stat-icon">📈</span>
+                <div className="stat-info">
+                  <span className="stat-label">Performance Tracking</span>
+                  <span className="stat-value">Available</span>
+                </div>
+              </div>
+          )}
+        </div>
         </section>
 
                   {/* PROGRAM FEATURES */}

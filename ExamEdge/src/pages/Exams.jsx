@@ -2,6 +2,7 @@ import { useSearchParams,useNavigate } from "react-router-dom";
 import exams from "../data/exams.json";
 import streams from "../data/streams.json";
 import { useState } from "react";
+import Navbar from "../components/Navbar";
 
 import "./Exams.css";
 
@@ -43,6 +44,7 @@ const Exams = () => {
   
     return (
     <div className="exams-page">
+      <Navbar />
 
       {/* STREAM POPUP */}
       {showStreamModal && selectedExamId && (
@@ -69,14 +71,12 @@ const Exams = () => {
         {/* Try Demo Test button only for UG */}
           <button
             className="demo-btn"
-            onClick={() => navigate(`/demo/${category}`)}
+            onClick={() => window.open(`/mock/${category}`, "_blank")}
           >
-            Try Demo Test
+            Try Mock Test
           </button>
         
       </div>
-
-      
     </section>
 
 

@@ -1,9 +1,27 @@
 :root {
-  --primary-blue: #6258e6;
-  --light-blue: #e7f1ff;
-  --dark-text: #1f2937;
-  --gray-text: #6b7280;
+  --primary: #2563eb;        /* main blue (Home page CTA) */
+  --primary-soft: #eaf2ff;   /* light background */
+  --primary-dark: #1e40af;   /* hover / emphasis */
+
+  --accent: #0ea5e9;         /* subtle highlight */
+
+  --text-dark: #0f172a;
+  --text-gray: #475569;
+
+  --card-bg: #ffffff;
 }
+h1, h2, h3, h4 {
+  letter-spacing: -0.3px;
+}
+
+.exam-left h2 {
+  font-weight: 700;
+}
+
+.exam-about {
+  font-size: 15.5px;
+}
+
 
 
 .exams-page {
@@ -14,34 +32,27 @@
 
 
 .exams-header {
-  text-align: center;
-  padding: 10px 10%;
-background: linear-gradient(135deg, #414969, #60b5c4);
-color: white;
-  padding: 40px;
-  border-radius: 18px;
-
+  background: var(--primary-soft);
+  color: #0f172a;
+  padding: 24px 10%;
+  border-radius: 20px;
 }
 
 .exams-header h1 {
-  font-size: 38px;
-  color: white;
+  font-size: 42px;
+  font-weight: 700;
+}
+.header-top {
+  margin-bottom: 0;
+}
+
+.exams-header h1 {
+  margin-bottom: 10px;
 }
 
 .exams-header p {
-  margin-top: 12px;
-  font-size: 16px;
-  color:white;
+  margin-bottom: 12px;
 }
-
-
-.exam-header-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-}
-
 
 
 .exam-header p {
@@ -60,8 +71,8 @@ color: white;
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding: 40px 8%;
-  background:var(--light-blue);
+  padding: 40px 4%;
+  background:var(--primary-soft);
 
 }
 
@@ -69,6 +80,7 @@ color: white;
 .exam-card {
     position: relative; 
   display: flex;
+  align-items: stretch;
   justify-content: space-between;
   gap: 40px;
   padding: 40px 40px 40px 70px;
@@ -104,6 +116,13 @@ background: white;
   box-shadow: 4px 0 12px rgba(0,0,0,0.15);
 
 }
+.exam-category {
+  background: var(--primary);
+  color: white;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
 
 .exam-left h2 {
   margin: 14px 0;
@@ -142,18 +161,31 @@ background: white;
 
 
 .exam-right {
-  width: 35%;
-background: linear-gradient(135deg, #5c648a, #73b9c5);
-color: white;
- 
-  padding: 30px;
-  border-radius: 14px;
+  background: linear-gradient(135deg, #eaf2ff, #dbeafe);
+  color: var(--text-dark);
+  padding: 32px;
+  border-radius: 16px;
+}
+.exam-right {
+  width: 34%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
+
 .exam-right h4 {
-  margin-bottom: 15px;
-  color: white
+  color: var(--primary-dark);
+  font-size: 18px;
+  margin-bottom: 16px;
 }
+
+.exam-right li {
+  color: var(--text-dark);
+  font-size: 14px;
+}
+
 
 .exam-right ul {
   list-style: none;
@@ -161,24 +193,19 @@ color: white;
   margin-bottom: 25px;
 }
 
-.exam-right li {
-  margin-bottom: 10px;
-  font-size: 14px;
-  color:white
-}
-
-
 .exam-cta {
-  width: 100%;
+  background: var(--primary);
+  color: white;
   padding: 14px;
-background:black;
-
-  color:white;
-  border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 15px;
-  cursor: pointer;
+  font-weight: 600;
 }
+
+.exam-cta:hover {
+  background: var(--primary-dark);
+}
+
 @media (max-width: 1200px) {
   .exams-header h1 {
     font-size: 34px;
@@ -190,6 +217,7 @@ background:black;
 
   .exam-card {
     padding: 36px 36px 36px 60px;
+    gap: 30px;
   }
 
   .exam-left h2 {
@@ -198,22 +226,30 @@ background:black;
 
   .exam-right {
     padding: 26px;
+    width: 38%;
   }
 }
+
 @media (max-width: 992px) {
-  .exam-header-content {
+  .exams-header {
+    padding: 30px 5%;
+    border-radius: 0;
+  }
+
+  .header-top {
     flex-direction: column;
     text-align: center;
   }
 
   .exam-hero-image {
-    width: 260px;
+    width: 240px;
+    margin-top: 20px;
   }
 
   .exam-card {
     flex-direction: column;
-    padding: 40px;
-    gap: 30px;
+    padding: 30px;
+    gap: 25px;
   }
 
   .exam-left,
@@ -223,89 +259,45 @@ background:black;
 
   .exam-category {
     position: static;
-    margin: 0 0 12px 0;
-    display: inline-block;
+    margin: 0 0 15px 0;
   }
 
-  .exam-left h2 {
-    font-size: 26px;
+  .exam-meta {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .exams-header h1 {
+    font-size: 28px;
+  }
+
+  .exam-list {
+    padding: 30px 4%;
   }
 
   .exam-meta {
     grid-template-columns: repeat(2, 1fr);
   }
-}
-@media (max-width: 768px) {
-  .exams-header {
-    padding: 30px 6%;
-  }
-
-  .exams-header h1 {
-    font-size: 28px;
-  }
-
-  .exams-header p {
-    font-size: 15px;
-  }
-
-  .exam-list {
-    padding: 30px 5%;
-    gap: 30px;
-  }
-
-  .exam-card {
-    padding: 30px;
-    border-radius: 14px;
-  }
 
   .exam-left h2 {
     font-size: 24px;
   }
-
-  .exam-about {
-    font-size: 15px;
-    margin-bottom: 30px;
-  }
-
-  .exam-meta {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .exam-meta strong,
-  .exam-meta span {
-    font-size: 16px;
-  }
-
-  .exam-right {
-    padding: 24px;
-  }
-
-  .exam-cta {
-    font-size: 14px;
-    padding: 12px;
-  }
 }
+
 @media (max-width: 480px) {
   .exams-header h1 {
     font-size: 24px;
   }
 
-  .exam-left h2 {
-    font-size: 22px;
+  .exam-meta {
+    grid-template-columns: 1fr;
   }
 
-  .exam-category {
-    font-size: 13px;
-    padding: 8px 14px;
-  }
-
-  .exam-right h4 {
+  .demo-btn {
+    width: 100%;
+    padding: 12px;
     font-size: 16px;
-  }
-
-  .exam-right li {
-    font-size: 13px;
   }
 }
 .header-top {
@@ -317,17 +309,18 @@ background:black;
 }
 
 .demo-btn {
-  background-color: #2563EB; /* blue */
-  color: #fff;
+   background: var(--primary);
+  color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 28px;
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-size: 18px;
   font-weight: 700;
-  transition: background-color 0.3s;
+  margin-top: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
 .demo-btn:hover {
-  background-color: #1e40af; /* darker blue on hover */
+ 
+  transform: translateY(-2px);
 }
