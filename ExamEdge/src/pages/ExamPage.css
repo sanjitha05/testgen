@@ -781,3 +781,218 @@
   }
 }
 
+/* =====================================================
+   PAPER COMPLETED SCREEN
+   Add these rules to your existing ExamPage.css
+   ===================================================== */
+
+/* Full-page wrapper — covers the whole viewport */
+.paper-completed-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e8f0fe 0%, #f0f4ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Centered card */
+.paper-completed-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(37, 99, 235, 0.12);
+  max-width: 640px;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ---- Header ---- */
+.paper-completed-header {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  color: #fff;
+  padding: 36px 32px 28px;
+  text-align: center;
+}
+
+.paper-completed-icon {
+  font-size: 52px;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.paper-completed-header h1 {
+  margin: 0 0 8px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.paper-completed-exam-name {
+  margin: 0;
+  font-size: 0.95rem;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+/* ---- Status strip ---- */
+.paper-completed-strip {
+  display: flex;
+  align-items: stretch;
+  background: #f8faff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.strip-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 8px;
+  gap: 4px;
+}
+
+.strip-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.strip-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.strip-divider {
+  width: 1px;
+  background: #e2e8f0;
+  align-self: stretch;
+  margin: 12px 0;
+}
+
+/* ---- Body text ---- */
+.paper-completed-body {
+  padding: 28px 32px 20px;
+}
+
+.paper-completed-body h2 {
+  margin: 0 0 12px;
+  font-size: 1.15rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.paper-completed-body p {
+  margin: 0 0 12px;
+  font-size: 0.93rem;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.paper-completed-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- Important notice ---- */
+.paper-completed-notice {
+  margin: 0 32px;
+  padding: 14px 16px;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.87rem;
+  color: #92400e;
+  line-height: 1.5;
+}
+
+.notice-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ---- Action buttons ---- */
+.paper-completed-actions {
+  padding: 24px 32px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.paper-completed-btn-primary {
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+  transition: opacity 0.18s;
+}
+
+.paper-completed-btn-primary:hover {
+  opacity: 0.92;
+}
+
+.paper-completed-btn-secondary {
+  width: 100%;
+  padding: 12px 24px;
+  background: #fff;
+  color: #64748b;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 0.93rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.18s, color 0.18s;
+}
+
+.paper-completed-btn-secondary:hover {
+  border-color: #94a3b8;
+  color: #334155;
+}
+
+/* ---- Footer note ---- */
+.paper-completed-footer {
+  padding: 0 32px 28px;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 480px) {
+  .paper-completed-header {
+    padding: 28px 20px 20px;
+  }
+
+  .paper-completed-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .paper-completed-body,
+  .paper-completed-notice,
+  .paper-completed-actions {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .paper-completed-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .strip-value {
+    font-size: 0.95rem;
+  }
+}

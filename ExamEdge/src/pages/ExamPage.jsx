@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./ExamPage.css";
-import { supabase } from "../supabaseClient";
 import Instructions from "./Instructions";
 import useDisableBackButton from "../components/useDisableBackButton";
 
@@ -45,7 +44,9 @@ const [showFsWarning, setShowFsWarning] = useState(false);
   const [loading, setLoading] = useState(true);
   const raw = sessionStorage.getItem(`exam_${testId}`);
   const saved = raw ? JSON.parse(raw) : null;
-  const [candidateName,setCandidateName]=useState("");
+ // const [candidateName,setCandidateName]=useState("");
+  const [candidateName,setCandidateName] = useState(() => sessionStorage.getItem("candidateName") || "Candidate");
+
 
   const [activeSubjectIndex, setActiveSubjectIndex] = useState(saved?.activeSubjectIndex || 0);
   const [activeSectionIndex, setActiveSectionIndex] = useState(saved?.activeSectionIndex || 0);
@@ -57,13 +58,7 @@ const [showFsWarning, setShowFsWarning] = useState(false);
 const hasStarted = useRef(false);
 const handleSubmitRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState(0);
-
-useEffect(() => {
-  handleSubmitRef.current = handleSubmitTest;
-}, [responses, testData, questionTime, activeSubjectIndex, activeSectionIndex, currentIndex, timeLeft]);
-
-
-
+    const [paperCompletedInfo, setPaperCompletedInfo] = useState(null);
     const [isFullscreen, setIsFullscreen] = useState(!!document.fullscreenElement);
 
   const handleRequestFullscreen = () => {
@@ -85,6 +80,13 @@ useEffect(() => {
   const hydrated = useRef(false);
   // sessionStorage key for in-progress exam state
   const saveKey = `exam_${testId}`;
+
+useEffect(() => {
+  handleSubmitRef.current = handleSubmitTest;
+}, [responses, testData, questionTime, activeSubjectIndex, activeSectionIndex, currentIndex, timeLeft]);
+
+
+
     const getAllQuestionsFromSection = (section) => {
     const flat = [];
     section.questions.forEach(item => {
@@ -124,11 +126,12 @@ useEffect(() => {
     }
     return { full: 4, negative: 1 };
   };
-
+ //Initialize the exam time when the test loads
   useEffect(() => {
     if (!testData) return;
     const examDurationMinutes = Number(testData[0].Duration || 180);
     const examDurationSeconds = examDurationMinutes * 60;
+    //if the user is resuming the test, load the remaining time from sessionStorage, otherwise start fresh
     if(saved?.timeLeft != null){
        setTimeLeft(saved.timeLeft);
     }
@@ -152,8 +155,9 @@ useEffect(() => {
         setLoading(false);
       });
   }, [testId]);
-
+//restore candidate's exam state when the page reloads
   useEffect(() => {
+    
     try {
       const raw = sessionStorage.getItem(`exam_${testId}`);
       const saved = raw ? JSON.parse(raw) : null;
@@ -177,7 +181,7 @@ useEffect(() => {
     } catch (e) {
     }
   }, [testId, testData]);
-
+//security check if the user is opening the correct test session and not accessing the exam pzge incorrectly
 useEffect(() => {
   if (!raw) return; // allow fresh start
 
@@ -195,6 +199,7 @@ useEffect(() => {
 
 
   // -------------------- TIMER --------------------
+  //for implementing the exam countdown timer
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
@@ -208,7 +213,7 @@ useEffect(() => {
 
     return () => clearInterval(timer);
   }, []);
-
+// Auto-submit when time runs out
 useEffect(() => {
   if (!hasStarted.current) return;
 
@@ -236,7 +241,7 @@ useEffect(() => {
   }, [testData]);
 
 
-  // -------------------- LOAD SAVED STATE --------------------
+  // load saved state if the user refreshes or reopens the page
   useEffect(() => {
     if (!testData) return;
 
@@ -310,7 +315,7 @@ useEffect(() => {
     }
   }, [responses, visited, markedForReview, questionTime, timeLeft, activeSubjectIndex, activeSectionIndex, currentIndex, testId]);
 
-
+//store timetaken for that question,its visited status etc
   useEffect(() => {
     if (!testData) return;
 
@@ -319,8 +324,6 @@ useEffect(() => {
 
     const activeSection = activeSubject.sections[activeSectionIndex];
     if (!activeSection) return;
-    const questions=getAllQuestionsFromSection(activeSection);
-
 
     if (!currentQuestion) return;
 
@@ -345,25 +348,25 @@ useEffect(() => {
     setQuestionStartTime(Date.now());
   }, [currentIndex, activeSubjectIndex, activeSectionIndex]);
 
-  useEffect(() => {
-    if (!testId) return;
+  // useEffect(() => {
+  //   if (!testId) return;
   
-    const loadCandidate = async () => {
-      const { data, error } = await supabase
-        .from("test_attempts")
-        .select("name")
-        .eq("test_id", testId)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .single();
+  //   const loadCandidate = async () => {
+  //     const { data, error } = await supabase
+  //       .from("test_attempts")
+  //       .select("name")
+  //       .eq("test_id", testId)
+  //       .order("created_at", { ascending: false })
+  //       .limit(1)
+  //       .single();
   
-      if (!error && data) {
-        setCandidateName(data.name);
-      }
-    };
+  //     if (!error && data) {
+  //       setCandidateName(data.name);
+  //     }
+  //   };
   
-    loadCandidate();
-  }, [testId]);
+  //   loadCandidate();
+  // }, [testId]);
 
    useEffect(() => {
   const handleFsChange = () => {
@@ -413,6 +416,107 @@ useEffect(() => {
 
   // ==================== DERIVED VALUES ====================
 
+  if (paperCompletedInfo) {
+    const { paperNo, totalPapers, nextPaperId, examId: cExamId, examName: cExamName } = paperCompletedInfo;
+
+    const handleStartNextPaper = () => {
+      // Navigate to the Instructions page for Paper N+1.
+      // Instructions will then navigate to ExamPage with the new testId.
+      navigate("/instructions", {
+        state: {
+          examId: cExamId,
+          testId: nextPaperId,
+          streamId: ids.streamId || null
+        }
+      });
+    };
+
+    const handleAttemptLater = () => {
+      // Paper N result is already persisted in sessionStorage.
+      // User can resume Paper N+1 later from the home/test-list page.
+      navigate("/");
+    };
+
+    return (
+      <div className="paper-completed-page">
+        <div className="paper-completed-card">
+
+          {/* ---- Header ---- */}
+          <div className="paper-completed-header">
+            <div className="paper-completed-icon">✅</div>
+            <h1>Paper {paperNo} Submitted Successfully!</h1>
+            <p className="paper-completed-exam-name">{cExamName}</p>
+          </div>
+
+          {/* ---- Status strip ---- */}
+          <div className="paper-completed-strip">
+            <div className="strip-item">
+              <span className="strip-label">Papers Completed</span>
+              <span className="strip-value">{paperNo} / {totalPapers}</span>
+            </div>
+            <div className="strip-divider" />
+            <div className="strip-item">
+              <span className="strip-label">Papers Remaining</span>
+              <span className="strip-value">{totalPapers - paperNo}</span>
+            </div>
+            <div className="strip-divider" />
+            <div className="strip-item">
+              <span className="strip-label">Up Next</span>
+              <span className="strip-value">Paper {paperNo + 1}</span>
+            </div>
+          </div>
+
+          {/* ---- Message ---- */}
+          <div className="paper-completed-body">
+            <h2>Ready to attempt Paper {paperNo + 1}?</h2>
+            <p>
+              Your responses for <strong>Paper {paperNo}</strong> have been saved.
+              Your combined results for all {totalPapers} papers will be shown only after
+              you submit <strong>Paper {totalPapers}</strong>.
+            </p>
+            <p>
+              Click <strong>"Proceed to Paper {paperNo + 1}"</strong> below to read the
+              instructions and begin. Make sure you are ready — the timer will start as
+              soon as you enter the exam.
+            </p>
+          </div>
+
+          {/* ---- Important notice ---- */}
+          <div className="paper-completed-notice">
+            <span className="notice-icon">⚠️</span>
+            <span>
+              <strong>Do not close this browser tab.</strong>&nbsp;
+              Your Paper {paperNo} data is stored in this session.
+              Closing the tab before completing all papers may result in data loss.
+            </span>
+          </div>
+
+          {/* ---- Action buttons ---- */}
+          <div className="paper-completed-actions">
+            <button
+              className="paper-completed-btn-primary"
+              onClick={handleStartNextPaper}
+            >
+              Proceed to Paper {paperNo + 1} Instructions →
+            </button>
+            <button
+              className="paper-completed-btn-secondary"
+              onClick={handleAttemptLater}
+            >
+              I'll attempt Paper {paperNo + 1} later
+            </button>
+          </div>
+
+          <p className="paper-completed-footer">
+            If you attempt later, navigate back to the test list and start Paper {paperNo + 1} from there.
+            Your Paper {paperNo} responses will remain saved in this browser session.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+
   const examName = testData[0].Test_Name;
   const activeSubject = testData[activeSubjectIndex];
   const activeSection = activeSubject.sections[activeSectionIndex];
@@ -459,7 +563,7 @@ useEffect(() => {
   const toggleMSQOption = (optionIndex) => {
     setTempAnswer(prev => {
       const arr = Array.isArray(prev) ? [...prev] : [];
-
+      //if the option is already selected, unselect it, otherwise add it to the array of selected options
       if (arr.includes(optionIndex)) {
         return arr.filter(o => o !== optionIndex);
       }
@@ -488,6 +592,7 @@ useEffect(() => {
 
 
   // Immediate persist helper: merges current question's elapsed time before saving
+  //overrides is used because it allows the function to change certail values temporarily
   const persistProgress = (overrides = {}) => {
     try {
       // compute elapsed for the currently active question
@@ -528,8 +633,8 @@ useEffect(() => {
   };
 
   const selectOption = (optionValue) => {
-    const qKey = getQKey(currentQuestion.question_id);
-    const newResponses = { ...responses, [qKey]: optionValue };
+    // const qKey = getQKey(currentQuestion.question_id);
+    // const newResponses = { ...responses, [qKey]: optionValue };
     setTempAnswer(optionValue);
 
   };
@@ -765,66 +870,403 @@ useEffect(() => {
   };
 
 
-  function handleSubmitTest  (){
+  // function handleSubmitTest  (){
 
+  //   sessionStorage.removeItem("fs_exit_count");
+
+  //   const now = Date.now();
+  //   const timeSpent = Math.floor((now - questionStartTime) / 1000);
+
+  //   const lastQKey = getQKey(currentQuestion.question_id);
+
+  //   const finalQuestionTime = {
+  //     ...questionTime,
+  //     [lastQKey]: (questionTime[lastQKey] || 0) + timeSpent
+  //   };
+
+  //   // Build final result data
+  //   const resultData = [];
+
+  //   testData.forEach((subject, sIdx) => {
+  //     subject.sections.forEach((section, secIdx) => {
+  //       const allQuestions = getAllQuestionsFromSection(section);
+
+  //       allQuestions.forEach(q => {
+  //         const qKey = `${sIdx}-${secIdx}-${q.question_id}`;
+
+  //         resultData.push({
+  //           question_id: q.question_id,
+  //           subjectIndex: sIdx,
+  //           sectionIndex: secIdx,
+  //           selectedAnswer: responses[qKey] ?? null,
+  //           timeTaken: finalQuestionTime[qKey] || 0
+  //         });
+  //       });
+  //     });
+  //   });
+
+
+
+  //   const payload = { resultData, responses, questionTime: finalQuestionTime };
+
+  //   // persist so ResultsPage can reload/refresh safely
+  //   sessionStorage.setItem(`results_${testId}`, JSON.stringify(payload));
+
+  //   // clear any in-progress saved exam state
+  //   try { sessionStorage.removeItem(`exam_${testId}`); } catch (e) { }
+  //      // Exit full-screen mode
+  //   try {
+  //     if (document.fullscreenElement) {
+  //       document.exitFullscreen().catch(() => {
+  //         console.warn("Failed to exit full-screen.");
+  //       });
+  //     }
+  //   } catch (err) {
+  //     console.warn("Fullscreen exit not supported.");
+  //   }
+
+  //   navigate("/results", { state: { ...payload, testId } }, { replace: true });
+
+  // };
+// async function handleSubmitTest() {
+//     sessionStorage.removeItem("fs_exit_count");
+
+//     const now = Date.now();
+//     const timeSpent = Math.floor((now - questionStartTime) / 1000);
+
+//     // getQKey uses the CURRENT activeSubjectIndex/activeSectionIndex — plain "sIdx-secIdx-qId"
+//     const lastQKey = getQKey(currentQuestion.question_id);
+
+//     // Merge the last question's elapsed time into finalQuestionTime
+//     // All keys are "sIdx-secIdx-qId" — NO testId prefix anywhere
+//     const finalQuestionTime = {
+//       ...questionTime,
+//       [lastQKey]: (questionTime[lastQKey] || 0) + timeSpent
+//     };
+
+//     // Also merge the latest unsaved responses (tempAnswer for current question)
+//     // so we don't lose the answer the user was on when they hit Submit
+//     const finalResponses = { ...responses };
+//     if (
+//       tempAnswer !== null &&
+//       !(Array.isArray(tempAnswer) && tempAnswer.length === 0)
+//     ) {
+//       finalResponses[lastQKey] = Array.isArray(tempAnswer)
+//         ? [...tempAnswer].sort()
+//         : tempAnswer;
+//     }
+
+//     // Build resultData by walking testData and looking up plain "sIdx-secIdx-qId" keys
+//     const resultData = [];
+//     testData.forEach((subject, sIdx) => {
+//       subject.sections.forEach((section, secIdx) => {
+//         const allQuestions = getAllQuestionsFromSection(section);
+//         allQuestions.forEach(q => {
+//           const qKey = `${sIdx}-${secIdx}-${q.question_id}`;   // plain format — matches responses
+//           resultData.push({
+//             question_id:    q.question_id,
+//             subjectIndex:   sIdx,
+//             sectionIndex:   secIdx,
+//             selectedAnswer: finalResponses[qKey] ?? null,
+//             timeTaken:      finalQuestionTime[qKey] || 0
+//           });
+//         });
+//       });
+//     });
+
+//     const info = testData[0];
+//     const payload = {
+//       testId,
+//       examId:      info.examId || examId,
+//       paperNo:     info.paperNo     || 1,
+//       totalPapers: info.totalPapers || 1,
+//       nextPaperId: info.nextPaperId || null,
+//       resultData,
+//       responses:    finalResponses,
+//       questionTime: finalQuestionTime,
+//       testDataSectionCounts: testData.map(s => s.sections.length)
+//     };
+
+//     // Persist this paper's completed result
+//     sessionStorage.setItem(
+//       `exam_${payload.examId}_paper_${payload.paperNo}`,
+//       JSON.stringify(payload)
+//     );
+
+//     // Clear the in-progress autosave for this paper (no longer needed)
+//     //try { sessionStorage.removeItem(`exam_${testId}`); } catch (e) {}
+
+//     // Exit fullscreen
+//     try {
+//       if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+//     } catch {}
+
+//     // ---- SINGLE-PAPER TEST ----
+//     if (payload.totalPapers === 1) {
+//       sessionStorage.setItem(`results_${payload.examId}`, JSON.stringify(payload));
+//       navigate("/results", { state: { ...payload, testId: payload.examId } });
+//       return;
+//     }
+
+//     // ---- INTERMEDIATE PAPER: show the paper-completed screen ----
+//     if (payload.paperNo < payload.totalPapers && payload.nextPaperId) {
+//       setPaperCompletedInfo({
+//         paperNo: payload.paperNo,
+//         totalPapers: payload.totalPapers,
+//         nextPaperId: payload.nextPaperId,
+//         examId: payload.examId,
+//         examName: info.Test_Name || examName
+//       });
+//       // Component re-renders with the paperCompletedInfo screen (no navigate needed)
+//       return;
+//     }
+
+//     // ---- LAST PAPER: merge all papers and go to results ----
+
+//     // Collect ordered testIds for all papers so ResultsPage can rebuild merged testData
+//     const allPaperTestIds = [];
+//     for (let i = 1; i <= payload.totalPapers; i++) {
+//       const paperRaw = sessionStorage.getItem(`exam_${payload.examId}_paper_${i}`);
+//       if (paperRaw) {
+//         const p = JSON.parse(paperRaw);
+//         allPaperTestIds.push(p.testId);
+//       }
+//     }
+
+//     const combined = {
+//       resultData: [],
+//       responses: {},
+//       questionTime: {},
+//       sectionOffsets: {}
+//     };
+
+//     for (let i = 1; i <= payload.totalPapers; i++) {
+//       const paperRaw = sessionStorage.getItem(`exam_${payload.examId}_paper_${i}`);
+//       if (!paperRaw) continue;
+//       const p = JSON.parse(paperRaw);
+
+//       // Build the per-subject offset for THIS paper before updating combined.sectionOffsets
+//       const offsetBySubject = new Map();
+//       p.testDataSectionCounts?.forEach((count, sIdx) => {
+//         const prev = combined.sectionOffsets[sIdx] || 0;
+//         offsetBySubject.set(sIdx, prev);          // offset = sections already seen
+//         combined.sectionOffsets[sIdx] = prev + count; // advance for next paper
+//       });
+
+//       p.resultData.forEach(q => {
+//         const off = offsetBySubject.get(q.subjectIndex) || 0;
+//         combined.resultData.push({
+//           ...q,
+//           sectionIndex: q.sectionIndex + off,
+//           paperNo: p.paperNo
+//         });
+//       });
+
+//       Object.entries(p.responses || {}).forEach(([k, v]) => {
+//         const parts = k.split("-");
+//         const s = Number(parts[0]);
+//         const sec = Number(parts[1]);
+//         const qid = parts.slice(2).join("-");
+//         const off = offsetBySubject.get(s) || 0;
+//         combined.responses[`${s}-${sec + off}-${qid}`] = v;
+//       });
+
+//       Object.entries(p.questionTime || {}).forEach(([k, v]) => {
+//         const parts = k.split("-");
+//         const s = Number(parts[0]);
+//         const sec = Number(parts[1]);
+//         const qid = parts.slice(2).join("-");
+//         const off = offsetBySubject.get(s) || 0;
+//         const newKey = `${s}-${sec + off}-${qid}`;
+//         combined.questionTime[newKey] = (combined.questionTime[newKey] || 0) + v;
+//       });
+//     }
+
+//     // Cleanup per-paper storage now that we have the combined result
+//     // for (let i = 1; i <= payload.totalPapers; i++) {
+//     //   sessionStorage.removeItem(`exam_${payload.examId}_paper_${i}`);
+//     // }
+
+//     const finalCombined = {
+//       ...combined,
+//       examId: payload.examId,
+//       testId: payload.examId,
+//       totalPapers: payload.totalPapers,
+//       allPaperTestIds
+//     };
+
+//     sessionStorage.setItem(`results_${payload.examId}`, JSON.stringify(finalCombined));
+//     navigate("/results", { state: finalCombined });
+//   }
+ async function handleSubmitTest() {
     sessionStorage.removeItem("fs_exit_count");
 
     const now = Date.now();
     const timeSpent = Math.floor((now - questionStartTime) / 1000);
 
+    // getQKey uses the CURRENT activeSubjectIndex/activeSectionIndex — plain "sIdx-secIdx-qId"
     const lastQKey = getQKey(currentQuestion.question_id);
 
+    // Merge the last question's elapsed time into finalQuestionTime
+    // All keys are "sIdx-secIdx-qId" — NO testId prefix anywhere
     const finalQuestionTime = {
       ...questionTime,
       [lastQKey]: (questionTime[lastQKey] || 0) + timeSpent
     };
 
-    // Build final result data
-    const resultData = [];
+    // Also merge the latest unsaved responses (tempAnswer for current question)
+    // so we don't lose the answer the user was on when they hit Submit
+    const finalResponses = { ...responses };
+    if (
+      tempAnswer !== null &&
+      !(Array.isArray(tempAnswer) && tempAnswer.length === 0)
+    ) {
+      finalResponses[lastQKey] = Array.isArray(tempAnswer)
+        ? [...tempAnswer].sort()
+        : tempAnswer;
+    }
 
+    // Build resultData by walking testData and looking up plain "sIdx-secIdx-qId" keys
+    const resultData = [];
     testData.forEach((subject, sIdx) => {
       subject.sections.forEach((section, secIdx) => {
         const allQuestions = getAllQuestionsFromSection(section);
-
         allQuestions.forEach(q => {
-          const qKey = `${sIdx}-${secIdx}-${q.question_id}`;
-
+          const qKey = `${sIdx}-${secIdx}-${q.question_id}`;   // plain format — matches responses
           resultData.push({
-            question_id: q.question_id,
-            subjectIndex: sIdx,
-            sectionIndex: secIdx,
-            selectedAnswer: responses[qKey] ?? null,
-            timeTaken: finalQuestionTime[qKey] || 0
+            question_id:    q.question_id,
+            subjectIndex:   sIdx,
+            sectionIndex:   secIdx,
+            selectedAnswer: finalResponses[qKey] ?? null,
+            timeTaken:      finalQuestionTime[qKey] || 0
           });
         });
       });
     });
 
+    const info = testData[0];
+    const payload = {
+      testId,
+      examId:      info.examId || examId,
+      paperNo:     info.paperNo     || 1,
+      totalPapers: info.totalPapers || 1,
+      nextPaperId: info.nextPaperId || null,
+      resultData,
+      responses:    finalResponses,
+      questionTime: finalQuestionTime,
+      testDataSectionCounts: testData.map(s => s.sections.length)
+    };
 
+    // Persist this paper's completed result
+    sessionStorage.setItem(
+      `exam_${payload.examId}_paper_${payload.paperNo}`,
+      JSON.stringify(payload)
+    );
 
-    const payload = { resultData, responses, questionTime: finalQuestionTime };
+    // Clear the in-progress autosave for this paper (no longer needed)
+    try { sessionStorage.removeItem(`exam_${testId}`); } catch (e) {}
 
-    // persist so ResultsPage can reload/refresh safely
-    sessionStorage.setItem(`results_${testId}`, JSON.stringify(payload));
-
-    // clear any in-progress saved exam state
-    try { sessionStorage.removeItem(`exam_${testId}`); } catch (e) { }
-       // Exit full-screen mode
+    // Exit fullscreen
     try {
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {
-          console.warn("Failed to exit full-screen.");
-        });
-      }
-    } catch (err) {
-      console.warn("Fullscreen exit not supported.");
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    } catch {}
+
+    // ---- SINGLE-PAPER TEST ----
+    if (payload.totalPapers === 1) {
+      sessionStorage.setItem(`results_${payload.examId}`, JSON.stringify(payload));
+      navigate("/results", { state: { ...payload, testId: payload.examId } });
+      return;
     }
 
-    navigate("/results", { state: { ...payload, testId } }, { replace: true });
+    // ---- INTERMEDIATE PAPER: show the paper-completed screen ----
+    if (payload.paperNo < payload.totalPapers && payload.nextPaperId) {
+      setPaperCompletedInfo({
+        paperNo: payload.paperNo,
+        totalPapers: payload.totalPapers,
+        nextPaperId: payload.nextPaperId,
+        examId: payload.examId,
+        examName: info.Test_Name || examName
+      });
+      // Component re-renders with the paperCompletedInfo screen (no navigate needed)
+      return;
+    }
 
-  };
+    // ---- LAST PAPER: merge all papers and go to results ----
 
- 
+    // Collect ordered testIds for all papers so ResultsPage can rebuild merged testData
+    const allPaperTestIds = [];
+    for (let i = 1; i <= payload.totalPapers; i++) {
+      const paperRaw = sessionStorage.getItem(`exam_${payload.examId}_paper_${i}`);
+      if (paperRaw) {
+        const p = JSON.parse(paperRaw);
+        allPaperTestIds.push(p.testId);
+      }
+    }
+
+    const combined = {
+      resultData: [],
+      responses: {},
+      questionTime: {},
+      sectionOffsets: {}
+    };
+
+    for (let i = 1; i <= payload.totalPapers; i++) {
+      const paperRaw = sessionStorage.getItem(`exam_${payload.examId}_paper_${i}`);
+      if (!paperRaw) continue;
+      const p = JSON.parse(paperRaw);
+
+      // Build the per-subject offset for THIS paper before updating combined.sectionOffsets
+      const offsetBySubject = new Map();
+      p.testDataSectionCounts?.forEach((count, sIdx) => {
+        const prev = combined.sectionOffsets[sIdx] || 0;
+        offsetBySubject.set(sIdx, prev);          // offset = sections already seen
+        combined.sectionOffsets[sIdx] = prev + count; // advance for next paper
+      });
+
+      p.resultData.forEach(q => {
+        const off = offsetBySubject.get(q.subjectIndex) || 0;
+        combined.resultData.push({
+          ...q,
+          // sectionIndex is offset so ResultsPage flatMap (merged testData) resolves correctly
+          sectionIndex:         q.sectionIndex + off,
+          // keep original indices so Solutions page can look up by paper JSON
+          origSectionIndex:     q.sectionIndex,
+          paperNo:              p.paperNo,
+          paperTestId:          p.testId
+        });
+      });
+
+      // responses: key = "paperNo-sIdx-origSecIdx-qId"
+      // This avoids offset ambiguity and lets SolutionsPage find answers with original indices
+      Object.entries(p.responses || {}).forEach(([k, v]) => {
+        combined.responses[`${p.paperNo}-${k}`] = v;
+      });
+
+      // questionTime: key = "paperNo-sIdx-origSecIdx-qId" (same scheme as responses)
+      Object.entries(p.questionTime || {}).forEach(([k, v]) => {
+        const newKey = `${p.paperNo}-${k}`;
+        combined.questionTime[newKey] = (combined.questionTime[newKey] || 0) + v;
+      });
+    }
+
+    // Cleanup per-paper storage now that we have the combined result
+    for (let i = 1; i <= payload.totalPapers; i++) {
+      sessionStorage.removeItem(`exam_${payload.examId}_paper_${i}`);
+    }
+
+    const finalCombined = {
+      ...combined,
+      examId: payload.examId,
+      testId: payload.examId,
+      totalPapers: payload.totalPapers,
+      allPaperTestIds
+    };
+
+    sessionStorage.setItem(`results_${payload.examId}`, JSON.stringify(finalCombined));
+    navigate("/results", { state: finalCombined });
+  }
+
+
 
 
   const handleKeyPress = (key) => {
@@ -931,6 +1373,8 @@ useEffect(() => {
   const paletteHeaderText = showSubjectInPalette
     ? activeSubject.SubjectName
     : activeSection.SectionName;
+
+    
 
   return (
     <div className="exam-page">

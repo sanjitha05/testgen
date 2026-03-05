@@ -5,7 +5,8 @@
  ],
 
   "jee-advanced": [
-    { "id": "jee-adv-1", "name": "JEE Advanced – Test 1" }
+    { "id": "jee-adv-1", "name": "JEE Advanced – Test 1 Paper - 1" },
+    { "id": "jee-adv-2", "name": "JEE Advanced – Test 1 Paper - 2" }
   ],
   "bitsat" : [
     {"id": "bitsat-1","name": "BITSAT - Test 1"}
