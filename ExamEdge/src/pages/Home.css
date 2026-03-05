@@ -1,6 +1,17 @@
 .home {
-  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
+
+html, body {
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 
 /* NAVBAR */
 .navbar {
@@ -77,7 +88,9 @@
 
 /* HERO */
 .hero {
-  min-height: 65vh;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  min-height: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -88,6 +101,7 @@
 
 .hero-text {
   flex: 1.2;
+  text-align: center;
 }
 
 .hero-text h1 {
@@ -105,7 +119,8 @@
 }
 
 .hero-text p {
-  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto ;
   font-size: 19px;
   color: var(--text-slate);
   margin-bottom: 30px;
@@ -257,7 +272,7 @@
 
 .feature-card {
   background: white;
-  padding: 40px 30px;
+  padding: 36px 28px;
   border-radius: 20px;
   border: 1px solid #f1f5f9;
   transition: all 0.3s ease;
@@ -270,8 +285,8 @@
 }
 
 .feature-card img {
-  width: 180px;
-  height: 120px;
+  width: 140px;
+  height: auto;
   margin-bottom: 24px;
   object-fit: contain;
 }
@@ -334,8 +349,8 @@
   background: #0f172a;
   color: #f1f5f9;
   padding: 80px 8% 40px;
+   margin-top: auto;
 }
-
 .footer-grid {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 1fr;
@@ -415,6 +430,14 @@
   }
   .feature-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+   .feature-card {
+    padding: 30px 22px;
+  }
+
+  .feature-card img {
+    width: 120px;
   }
   .footer-grid {
     grid-template-columns: 1fr 1fr;
@@ -452,6 +475,26 @@
     font-size: 32px;
   }
 }
+@media (max-width: 600px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .feature-card {
+    padding: 24px 20px;
+  }
+
+  .feature-card img {
+    width: 100px;
+  }
+
+  .features h2 {
+    font-size: 28px;
+    margin-bottom: 36px;
+  }
+}
+
 
 @media (max-width: 480px) {
   .hero-text h1 {
@@ -467,4 +510,17 @@
     padding-left: 5%;
     padding-right: 5%;
   }
+  .feature-grid{
+    grid-template-columns: 1fr;
+
+  }
+  .navbar-auth{
+    gap:0
+  }
 }
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .home {
+    min-height: auto;
+  }
+}
+

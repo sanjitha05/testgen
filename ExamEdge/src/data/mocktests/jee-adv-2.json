@@ -1,7 +1,7 @@
 [
     {
-      "Test_Name" : "JEE ADVANCED TEST - 1 Paper - 1",
-      "Test_ID":"jee-adv-1",
+      "Test_Name" : "JEE ADVANCED TEST - 1 Paper - 2",
+      "Test_ID":"jee-adv-2",
       "examId":"jee-advanced",
       "Duration" : "120",
       "SubjectName": "Mathematics",
@@ -79,7 +79,7 @@
                 }
               ],
               "qtype": "MCQ",
-              "answer": "d",
+              "answer": ["b","d"],
              "marks": "4,1",
               "time-allotted": "60",
               "chapter": "Mechanical Properties of Fluids",

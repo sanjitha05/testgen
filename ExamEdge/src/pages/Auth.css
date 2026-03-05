@@ -39,7 +39,6 @@
 .auth-image p {
   font-size: 20px;
   color: var(--text-slate);
-  max-width: 420px;
   line-height: 1.6;
 }
 

@@ -1,7 +1,7 @@
 import "./Home.css";
 import Navbar from "../components/Navbar";
-import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useRef, useEffect } from "react";
 
 import heroImg from "../assets/home_img_bg.png";
 import ug from "../assets/ug.png"
@@ -16,8 +16,16 @@ import feature6 from "../assets/doubtss.png";
 
 const Home = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const aboutRef = useRef(null);
   const contactRef = useRef(null);
+
+  useEffect(() => {
+    if (location.state?.scrollTo === "about") {
+      aboutRef.current?.scrollIntoView({ behavior: "smooth" });
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
 
   const scrollToSection = (ref) => {
     ref.current.scrollIntoView({ behavior: "smooth" });
@@ -35,7 +43,7 @@ const Home = () => {
         <div className="hero-text">
           <h1>
             Learn Smart   &   Rank Higher<br />
-            <span>For Undergraduates  <br/>Postgraduates</span>
+            <span>For UG & PG Entrance Exam Aspirants</span>
           </h1>
           <p>
             Complete UG & PG entrance exam preparation with expert guidance,
@@ -193,8 +201,7 @@ const Home = () => {
     <div>
       <h4>Programs</h4>
       <ul>
-        <li>UG Entrance Exams</li>
-        <li>PG Entrance Exams</li>
+        <li>Entrance Exams</li>
         <li>Mock Tests</li>
         <li>Performance Analytics</li>
       </ul>
@@ -204,8 +211,8 @@ const Home = () => {
       <h4>Quick Links</h4>
       <ul>
         <li onClick={() => scrollToSection(aboutRef)}>About Us</li>
-        <li onClick={() => navigate("/exams")}>Exams</li>
-        <li onClick={() => navigate("/mock-test")}>Mock Test</li>
+        <li onClick={() => navigate("/exams?category=UG")}> UG Exams</li>
+        <li onClick={() => navigate("/exams?category=PG")}> PG Exams</li>
       </ul>
     </div>
 

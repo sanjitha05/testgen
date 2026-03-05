@@ -16,6 +16,11 @@ const ExamDetails = () => {
   const navigate = useNavigate();
 
   const exam = exams.find(e => e.id === examId);
+  const [searchQuery, setSearchQuery] = useState("");
+const [courseTypeFilter, setCourseTypeFilter] = useState("all");
+
+
+
   const examStreams = exam.hasStreams
   ? streams.filter(s => s.examId === examId)
   : [];
@@ -24,22 +29,46 @@ const ExamDetails = () => {
     ? examStreams.find(s => s.id === streamId)
     : null;
 
-  const baseCourses = courses.filter(c => c.examId === examId);
+  // const baseCourses = courses.filter(c => c.examId === examId);
 
 
   const streamCourses = exam.hasStreams && activeStream
   ? courseStreams
-     .filter(cs => cs.streamId === activeStream.id)
+      .filter(cs => cs.streamId === activeStream.id)
       .map(cs => {
-        const base = baseCourses.find(b => b.id === cs.courseId);
-        return base ? { ...base, ...cs } : { ...cs };
+        const course = courses.find(c => c.id === cs.courseId);
+        return course ? { ...course, ...cs } : null;
       })
-  : baseCourses;
+      .filter(Boolean)
+  : courses.filter(c => c.examId === examId);
+
  
   const [selectedModule, setSelectedModule] = useState("complete-preparation-program");
   const [openCourse, setOpenCourse] = useState(null);
 
   const activeModule = modules.find(m => m.id === selectedModule);
+  const allCourses = exam.hasStreams && activeStream
+  ? courseStreams
+      .filter(cs => cs.streamId === activeStream.id)
+      .map(cs => {
+        const course = courses.find(c => c.id === cs.courseId);
+        return course ? { ...course, ...cs } : null;
+      })
+      .filter(Boolean)
+  : courses.filter(c => c.examId === examId);
+const filteredCourses = allCourses
+  .filter(course => course.moduleId === selectedModule)
+  .filter(course => {
+    if (courseTypeFilter === "all") return true;
+    return course.courseType === courseTypeFilter;
+  })
+  .filter(course =>
+    course.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  const pattern = activeStream
+  ? activeStream.examPattern
+  : exam.examPattern;
+
 
 return (
   <div className="exam-layout">
@@ -75,40 +104,34 @@ return (
       </div>
 
       {/* CARD 2 – EXAM PATTERN */}
-      <div className="overview-cardd">
-        <h3>Exam Pattern</h3>
-        <p>
-          <strong>Subjects:</strong>{" "}
-          {Array.isArray(
-            activeStream
-              ? activeStream?.examPattern?.subjects
-              : exam?.examPattern?.subjects
-          )
-            ? (activeStream
-                ? activeStream.examPattern.subjects
-                : exam.examPattern.subjects
-              )
-                .map(s => (typeof s === "string" ? s : s.name))
-                .join(", ")
-            : "-"}
-        </p>
+<div className="overview-cardd">
+  <h3>Exam Pattern</h3>
 
-      
-        <p>
-          <strong>Total Questions:</strong>{" "}
-          {exam.examPattern.totalQuestions}
-        </p>
+  <p>
+    <strong>Subjects:</strong>{" "}
+    {Array.isArray(pattern?.subjects)
+      ? pattern.subjects
+          .map(s => (typeof s === "string" ? s : s.name))
+          .join(", ")
+      : "-"}
+  </p>
 
-        <p>
-          <strong>Total Marks:</strong>{" "}
-          {exam.examPattern.marks}
-        </p>
+  <p>
+    <strong>Total Questions:</strong>{" "}
+    {pattern?.totalQuestions ?? "-"}
+  </p>
 
-        <p>
-          <strong>Duration:</strong>{" "}
-          {exam.examPattern.duration}
-        </p>
-      </div>
+  <p>
+    <strong>Total Marks:</strong>{" "}
+    {pattern?.marks ?? "-"}
+  </p>
+
+  <p>
+    <strong>Duration:</strong>{" "}
+    {pattern?.duration ?? "-"}
+  </p>
+</div>
+
 
       {/* CARD 3 – SPECIALITY */}
       <div className="overview-cardd">
@@ -151,12 +174,38 @@ return (
             ))}
           </div>
         </div>
+
+        <div className="course-filters">
+  {/* SEARCH */}
+  <input
+    type="text"
+    placeholder="Search courses..."
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    className="course-search"
+  />
+
+  {/* COURSE TYPE FILTER */}
+  <select
+    value={courseTypeFilter}
+    onChange={(e) => setCourseTypeFilter(e.target.value)}
+    className="course-type-filter"
+  >
+    <option value="all">All Courses</option>
+    <option value="Full Course">Full Course</option>
+    <option value="Subject-wise Course">Subject-wise</option>
+    <option value="Topic-wise Course">Topic-wise</option>
+  </select>
+</div>
+
         
 {/* COURSES GRID */}
 <div className="courses-grid">
-  {streamCourses
-    .filter(c => c.moduleId === selectedModule)
-    .map(course => {
+  {filteredCourses.map(course => {
+
+  // {streamCourses
+  //   .filter(c => c.moduleId === selectedModule)
+  //   .map(course => {
       const instructor = instructors.find(
         i => i.id === course.instructorId
       );

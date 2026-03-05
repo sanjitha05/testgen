@@ -1,16 +1,51 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./ExamPage.css";
+import { supabase } from "../supabaseClient";
 import Instructions from "./Instructions";
+import useDisableBackButton from "../components/useDisableBackButton";
+
 
 export default function ExamPage() {
+  useDisableBackButton();
   const navigate = useNavigate();
-  const { examId, testId } = useParams();
+  const location = useLocation();
+  const MAX_FULLSCREEN_EXITS = 2;
+
+const [fullscreenExitCount, setFullscreenExitCount] = useState(() => {
+  const saved = sessionStorage.getItem("fs_exit_count");
+  return saved ? Number(saved) : 0;
+});
+
+const [showFsWarning, setShowFsWarning] = useState(false);
+
+  // Get IDs from location.state or sessionStorage
+  const [ids] = useState(() => {
+    const stateIds = location.state || {};
+    if (stateIds.examId && stateIds.testId) {
+      sessionStorage.setItem("examId", stateIds.examId);
+      sessionStorage.setItem("testId", stateIds.testId);
+      if (stateIds.streamId) {
+        sessionStorage.setItem("streamId", stateIds.streamId);
+      } else {
+        sessionStorage.removeItem("streamId");
+      }
+      return stateIds;
+    }
+    return {
+      examId: sessionStorage.getItem("examId"),
+      testId: sessionStorage.getItem("testId"),
+      streamId: sessionStorage.getItem("streamId"),
+    };
+  });
+
+  const { examId, testId } = ids;
   const [showInstructions, setShowInstructions] = useState(false);
   const [testData, setTestData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const raw = localStorage.getItem(`exam_${testId}`);
+  const raw = sessionStorage.getItem(`exam_${testId}`);
   const saved = raw ? JSON.parse(raw) : null;
+  const [candidateName,setCandidateName]=useState("");
 
   const [activeSubjectIndex, setActiveSubjectIndex] = useState(saved?.activeSubjectIndex || 0);
   const [activeSectionIndex, setActiveSectionIndex] = useState(saved?.activeSectionIndex || 0);
@@ -20,24 +55,16 @@ export default function ExamPage() {
   const [markedForReview, setMarkedForReview] = useState(saved?.markedForReview || {});
   const [questionTime, setQuestionTime] = useState(saved?.questionTime || {});
 const hasStarted = useRef(false);
-
+const handleSubmitRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState(0);
 
-    const [isFullscreen, setIsFullscreen] = useState(!!document.fullscreenElement);
-//   useEffect(() => {
-//   const finished = localStorage.getItem(`results_${testId}`);
-//   if (finished) {
-//     navigate(`/results/${testId}`, { replace: true });
-//   }
-// }, [testId]);
+useEffect(() => {
+  handleSubmitRef.current = handleSubmitTest;
+}, [responses, testData, questionTime, activeSubjectIndex, activeSectionIndex, currentIndex, timeLeft]);
 
-  useEffect(() => {
-    const handleFsChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-    document.addEventListener("fullscreenchange", handleFsChange);
-    return () => document.removeEventListener("fullscreenchange", handleFsChange);
-  }, []);
+
+
+    const [isFullscreen, setIsFullscreen] = useState(!!document.fullscreenElement);
 
   const handleRequestFullscreen = () => {
     try {
@@ -56,7 +83,7 @@ const hasStarted = useRef(false);
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
   // Hydration flag to avoid overwriting saved state during initial mount
   const hydrated = useRef(false);
-  // localStorage key for in-progress exam state
+  // sessionStorage key for in-progress exam state
   const saveKey = `exam_${testId}`;
     const getAllQuestionsFromSection = (section) => {
     const flat = [];
@@ -128,7 +155,7 @@ const hasStarted = useRef(false);
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(`exam_${testId}`);
+      const raw = sessionStorage.getItem(`exam_${testId}`);
       const saved = raw ? JSON.parse(raw) : null;
       if (!saved || !testData) return;
 
@@ -151,6 +178,22 @@ const hasStarted = useRef(false);
     }
   }, [testId, testData]);
 
+useEffect(() => {
+  if (!raw) return; // allow fresh start
+
+  try {
+    const saved = JSON.parse(raw);
+
+    if (saved.testId !== testId) {
+      navigate("/home", { replace: true });
+    }
+  } catch (e) {
+    navigate("/home", { replace: true });
+  }
+}, [testId]);
+
+
+
   // -------------------- TIMER --------------------
   useEffect(() => {
     const timer = setInterval(() => {
@@ -170,7 +213,9 @@ useEffect(() => {
   if (!hasStarted.current) return;
 
   if (timeLeft === 0 && testData) {
-    handleSubmitTest();
+    if (handleSubmitRef.current) {
+      handleSubmitRef.current();
+    }
   }
 }, [timeLeft, testData]);
 
@@ -196,7 +241,7 @@ useEffect(() => {
     if (!testData) return;
 
     try {
-      const savedRaw = localStorage.getItem(saveKey);
+      const savedRaw = sessionStorage.getItem(saveKey);
       if (!savedRaw) {
         hydrated.current = true;
         return;
@@ -259,7 +304,7 @@ useEffect(() => {
         questionTime,
         timeLeft
       };
-      localStorage.setItem(saveKey, JSON.stringify(payload));
+      sessionStorage.setItem(saveKey, JSON.stringify(payload));
     } catch (e) {
       console.warn('Failed to save exam state:', e);
     }
@@ -299,6 +344,62 @@ useEffect(() => {
     // Reset start time for new question
     setQuestionStartTime(Date.now());
   }, [currentIndex, activeSubjectIndex, activeSectionIndex]);
+
+  useEffect(() => {
+    if (!testId) return;
+  
+    const loadCandidate = async () => {
+      const { data, error } = await supabase
+        .from("test_attempts")
+        .select("name")
+        .eq("test_id", testId)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single();
+  
+      if (!error && data) {
+        setCandidateName(data.name);
+      }
+    };
+  
+    loadCandidate();
+  }, [testId]);
+
+   useEffect(() => {
+  const handleFsChange = () => {
+    const isNowFullscreen = !!document.fullscreenElement;
+    setIsFullscreen(isNowFullscreen);
+
+    // 🚨 User EXITED fullscreen
+    if (!isNowFullscreen) {
+      setFullscreenExitCount(prev => {
+        const newCount = prev + 1;
+        sessionStorage.setItem("fs_exit_count", newCount);
+       if (newCount > MAX_FULLSCREEN_EXITS) {
+        if (handleSubmitRef.current) {
+          handleSubmitRef.current();
+        }
+      }
+
+        else {
+          setShowFsWarning(true);
+        }
+
+        return newCount;
+      });
+    } else {
+      // ✅ Returned to fullscreen
+      setShowFsWarning(false);
+    }
+  };
+
+  document.addEventListener("fullscreenchange", handleFsChange);
+
+  return () => {
+    document.removeEventListener("fullscreenchange", handleFsChange);
+  };
+}, []);
+  
 
   // ==================== CONDITIONAL RETURNS (AFTER ALL HOOKS) ====================
 
@@ -343,7 +444,7 @@ useEffect(() => {
     parseMarks(currentQuestion.marks);
 
 
-  const getQKey = (questionId) => {
+  function getQKey  (questionId) {
     return `${activeSubjectIndex}-${activeSectionIndex}-${questionId}`;
   };
 
@@ -420,7 +521,7 @@ useEffect(() => {
         ...overrides
       };
 
-      localStorage.setItem(saveKey, JSON.stringify(payload));
+      sessionStorage.setItem(saveKey, JSON.stringify(payload));
     } catch (e) {
       console.warn('Failed to persist exam state:', e);
     }
@@ -657,9 +758,17 @@ useEffect(() => {
     activeSectionIndex === 0 &&
     currentIndex === 0;
 
+  const handleSubmit = () => {
+    if (window.confirm("Are you sure you want to submit the test?")) {
+      handleSubmitTest();
+    }
+  };
 
 
-  const handleSubmitTest = () => {
+  function handleSubmitTest  (){
+
+    sessionStorage.removeItem("fs_exit_count");
+
     const now = Date.now();
     const timeSpent = Math.floor((now - questionStartTime) / 1000);
 
@@ -692,13 +801,14 @@ useEffect(() => {
     });
 
 
+
     const payload = { resultData, responses, questionTime: finalQuestionTime };
 
     // persist so ResultsPage can reload/refresh safely
-    localStorage.setItem(`results_${testId}`, JSON.stringify(payload));
+    sessionStorage.setItem(`results_${testId}`, JSON.stringify(payload));
 
     // clear any in-progress saved exam state
-    try { localStorage.removeItem(`exam_${testId}`); } catch (e) { }
+    try { sessionStorage.removeItem(`exam_${testId}`); } catch (e) { }
        // Exit full-screen mode
     try {
       if (document.fullscreenElement) {
@@ -710,9 +820,12 @@ useEffect(() => {
       console.warn("Fullscreen exit not supported.");
     }
 
-    navigate(`/results/${testId}`, { state: payload });
+    navigate("/results", { state: { ...payload, testId } }, { replace: true });
 
   };
+
+ 
+
 
   const handleKeyPress = (key) => {
     let value = tempAnswer ?? "";
@@ -811,11 +924,6 @@ useEffect(() => {
     });
   };
 
-  const handleSubmit = () => {
-    if (window.confirm("Are you sure you want to submit the test?")) {
-      handleSubmitTest();
-    }
-  };
 
   const hasMultipleSections = activeSubject.sections.length > 1;
   const showSubjectInPalette = activeSubject.sections.length === 1;
@@ -826,16 +934,30 @@ useEffect(() => {
 
   return (
     <div className="exam-page">
-     {!isFullscreen && (
+     {!isFullscreen && showFsWarning && (
         <div className="fullscreen-warning-overlay">
-          <div className="warning-content">
-            <h3>Full-Screen Mode Required</h3>
-            <p>To maintain examination integrity, you must be in full-screen mode.</p>
-            <button className="return-fs-btn" onClick={handleRequestFullscreen}>
-              Return to Full-Screen
-            </button>
-          </div>
-        </div>
+  <div className="warning-content">
+    <h3>Full-Screen Mode Required</h3>
+
+    <p>
+      You have exited full-screen mode.
+    </p>
+
+    <p style={{ color: "red", fontWeight: "bold" }}>
+      Attempts remaining: {MAX_FULLSCREEN_EXITS - fullscreenExitCount}
+    </p>
+
+    <p>
+      Exiting full-screen more than {MAX_FULLSCREEN_EXITS} times will
+      automatically submit your exam.
+    </p>
+
+    <button className="return-fs-btn" onClick={handleRequestFullscreen}>
+      Return to Full-Screen
+    </button>
+  </div>
+</div>
+
       )}
       {/* TOP BAR */}
       <div className="top-bar">
@@ -845,7 +967,7 @@ useEffect(() => {
         <div className="top-bar-right">
           <div className="candidate-info">
             <div className="candidate-details">
-              <span>Candidate Name: <b>John Doe</b></span>
+              <span>Candidate Name: <b>{candidateName}</b></span>
               <span>Subject: <b>{activeSubject.SubjectName}</b></span>
             </div>
             <div className="candidate-photo">👤</div>
@@ -956,11 +1078,14 @@ useEffect(() => {
                             onChange={() => currentQuestion.qtype === "MCQ" ? selectOption(opt.option_index) : toggleMSQOption(opt.option_index)}
                           />
                           <span className="option-label">{opt.option_index.toUpperCase()}.</span>
+                          <div className="option-content">
                           {opt.optionImgName ? (
                             <img src={opt.optionImgName} alt="option" className="option-image" />
                           ) : (
+                            
                             <span>{opt.option_text}</span>
                           )}
+                          </div>
                         </label>
                       );
                     })}

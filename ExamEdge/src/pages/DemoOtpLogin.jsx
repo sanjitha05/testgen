@@ -56,43 +56,60 @@ export default function DemoOtpLogin() {
     }
   };
 
-  // VERIFY OTP
-  const verifyOtp = async () => {
-    const path =
-  exam === "gate" || exam === "jam"
-    ? `/instructions/${exam}/${stream}/${testId}`
-    : `/instructions/${exam}/${testId}`;
+const verifyOtp = async () => {
+  setError("");
+  setLoading(true);
 
+  const { data, error } = await supabase.auth.verifyOtp({
+    email,
+    token: otp,
+    type: "email"
+  });
 
-
-    setError("");
-    setLoading(true);
-
-    const { error } = await supabase.auth.verifyOtp({
-      email,
-      token: otp,
-      type: "email"
-    });
-
+  if (error) {
     setLoading(false);
+    setError("Invalid or expired OTP");
+    return;
+  }
 
-    if (error) {
-      setError("Invalid or expired OTP");
-    } else {
-      // Enter full-screen mode before navigating
-      try {
-        const docEl = document.documentElement;
-        if (docEl.requestFullscreen) {
-          docEl.requestFullscreen().catch(() => {
-            console.warn("Fullscreen request failed, proceeding anyway.");
-          });
-        }
-      } catch (err) {
-        console.warn("Fullscreen not supported or blocked.");
+  // ✅ user is now authenticated
+  const user = data.user;
+
+  // 📌 store test attempt details
+  const { error: insertError } = await supabase
+    .from("test_attempts")
+    .insert([
+      {
+        user_id: user.id,
+        name,
+        email,
+        category,          // UG / PG
+        exam,
+        stream: exam === "gate" || exam === "jam" ? stream : null,
+        test_id: testId
       }
-      navigate(path);
+    ]);
+
+  if (insertError) {
+    console.error(insertError);
+    setError("Failed to save test details");
+    setLoading(false);
+    return;
+  }
+
+  setLoading(false);
+
+  
+  // navigate
+  navigate("/instructions", {
+    state: {
+      examId: exam,
+      streamId: exam === "gate" || exam === "jam" ? stream : null,
+      testId: testId
     }
-  };
+  });
+};
+
   const availableTests = (() => {
   if (!exam) return [];
 

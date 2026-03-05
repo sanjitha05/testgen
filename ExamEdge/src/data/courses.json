@@ -65,7 +65,7 @@
     "title": "JEE Main Physics Complete Preparation",
     "moduleId": "complete-preparation-program",
     "courseType": "Subject-wise Course",
-
+    "description": "Master JEE Main Physics with our comprehensive subject-wise course. We cover Mechanics, Electromagnetism, Optics, and Modern Physics in great detail. With conceptual clarity videos and a vast array of practice problems, you'll be equipped to tackle any physics challenge in the exam.",
     "subjects": "Physics",
     "totalTopics": 65,
     "totalVideos": 110,
@@ -97,7 +97,7 @@
     "title": "JEE Main Chemistry Complete Preparation",
     "moduleId": "complete-preparation-program",
     "courseType": "Subject-wise Course",
-
+    "description": "Excel in JEE Main Chemistry with our dedicated subject-wise program. This course provides deep insights into Physical, Organic, and Inorganic Chemistry. Our NCERT-aligned content ensures you don't miss any crucial points, while our practice tests help you perfect your accuracy.",
     "subjects": "Chemistry",
     "totalTopics": 60,
     "totalVideos": 105,
@@ -129,7 +129,7 @@
     "title": "JEE Main Mathematics Complete Preparation",
     "moduleId": "complete-preparation-program",
     "courseType": "Subject-wise Course",
-
+    "description": "Strengthen your Mathematics for JEE Main with our expert-led course. From Algebra and Calculus to Coordinate Geometry and Trigonometry, we cover it all. Focus on building strong problem-solving skills and learning time-saving shortcuts to ace the math section.",
     "subjects": "Mathematics",
     "totalTopics": 65,
     "totalVideos": 105,
@@ -162,7 +162,7 @@
     "moduleId": "complete-preparation-program",
     "deliveryType": "Complete Preparation Program",
     "courseType": "Topic-wise Course",
-
+    "description": "Master the most important topic in JEE Main Mathematics – Calculus. This course focuses specifically on Differential and Integral Calculus, providing you with the tools to solve complex problems with ease. Perfect for students looking to secure high marks in this high-weightage section.",
     "subjects": "Mathematics – Calculus",
     "totalTopics": 20,
     "totalVideos": 45,
@@ -195,7 +195,7 @@
     "moduleId": "complete-preparation-program",
     "deliveryType": "Complete Preparation Program",
     "courseType": "Topic-wise Course",
-
+    "description": "Deep dive into Electrostatics with our targeted topic-wise course for JEE Main Physics. Understand the nuances of Electric Fields, Potentials, and Capacitance through detailed lectures and focused practice. Gain the confidence to solve even the toughest electrostatics questions.",
     "subjects": "Physics – Electrostatics",
     "totalTopics": 15,
     "totalVideos": 35,
@@ -225,10 +225,9 @@
   "id": "jee-main-test-full",
   "examId": "jee-main",
   "title": "JEE Main Test Series Program",
-
   "moduleId": "test-series-program",
   "courseType": "Full Course",
-
+  "description": "Simulate the real exam experience with our JEE Main Test Series Program. This comprehensive series includes full-length mock tests that mirror the latest exam pattern. Gain valuable insights into your performance and improve your time management skills before the actual exam.",
   "subjects": "Physics, Chemistry, Mathematics",
   "totalQuestions": 3500,
   "totalTests": 40,
@@ -245,10 +244,9 @@
   "id": "jee-main-test-mat",
   "examId": "jee-main",
   "title": "JEE Main Mathematics Test Series Program",
-
   "moduleId": "test-series-program",
   "courseType": "Subject-wise Course",
-
+  "description": "Target your Mathematics preparation with our specialized JEE Main Math Test Series. This program offers a range of chapter-wise and full-length tests designed to challenge your mathematical abilities. Track your progress and identify areas for improvement in Math.",
   "subjects": "Mathematics",
   "totalQuestions": 3500,
   "totalTests": 40,
@@ -266,10 +264,9 @@
   "id": "jee-main-practice-full",
   "examId": "jee-main",
   "title": "JEE Main Practice Program",
-
   "moduleId": "practice-program",
   "courseType": "Full Course",
-
+  "description": "Boost your problem-solving speed and accuracy with our JEE Main Practice Program. With over 6000 mixed-difficulty questions, this program provides the extensive practice needed to excel. Ideal for students who want to reinforce their learning through consistent practice.",
   "subjects": "Physics, Chemistry, Mathematics",
   "totalTopics": 190,
   "totalQuestions": 6000,
@@ -290,7 +287,7 @@
     "title": "JEE Advanced Physics Test Series Program",
      "moduleId": "test-series-program",
     "courseType": "Subject-wise Course",
-
+    "description": "Prepare for the rigors of IIT-JEE with our Advanced Physics Test Series. This program features high-level problems and mock tests specifically designed for the JEE Advanced pattern. Deepen your understanding and sharpen your competitive edge in Physics.",
     "subjects": "Advanced Physics",
     "totalTopics": 170,
     "totalVideos": 280,
@@ -320,7 +317,7 @@
      "moduleId": "complete-preparation-program",
     "deliveryType": "Complete Preparation Program",
     "courseType": "Full Course",
-
+    "description": "Our flagship JEE Advanced Complete Preparation Program is designed for serious IIT aspirants. This intensive course covers advanced concepts and complex problem-solving strategies across all three subjects. Get the edge you need to secure a top rank in JEE Advanced.",
     "subjects": "Advanced Physics, Chemistry, Mathematics",
     "totalTopics": 170,
     "totalVideos": 280,
@@ -385,7 +382,7 @@
     "moduleId": "complete-preparation-program",
     "deliveryType": "Complete Preparation Program",
     "courseType": "Full Course",
-
+    "description": "Ace your state entrance exam with our EAMCET Complete Preparation Program. Tailored specifically to the state syllabus, this course provides structured learning for Physics, Chemistry, and Mathematics. Focus on the most relevant topics to achieve a top rank in EAMCET.",
     "subjects": "Physics, Chemistry, Mathematics",
     "totalTopics": 140,
     "totalVideos": 240,

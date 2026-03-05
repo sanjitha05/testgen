@@ -134,6 +134,7 @@ background: white;
   color: var(--gray-text);
   line-height: 1.6;
   margin-bottom: 40px;
+  text-align: justify;
 }
 
 

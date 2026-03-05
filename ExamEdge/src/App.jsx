@@ -11,6 +11,7 @@ import DemoOtpLogin from "./pages/DemoOtpLogin.jsx";
 import Instructions from "./pages/Instructions.jsx";
 import SolutionsPage from "./pages/SolutionsPage.jsx";
 import ResultsPage from "./pages/ResultsPage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css"
 import ExamPage from "./pages/ExamPage.jsx";
 
@@ -34,14 +35,10 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/mock/:category" element={<DemoOtpLogin />} />
 
-      <Route path="/instructions/:examId/:testId" element={<Instructions showStartButton={true} />} />
-      <Route path="/instructions/:examId/:streamId/:testId" element={<Instructions showStartButton={true} />} />
-
-      <Route path="/mock-test/:examId/:testId" element={<ExamPage />} />
-      <Route path="/mock-test/:examId/:streamId/:testId" element={<ExamPage />} />
-
-        <Route path="/solutions/:testId" element={<SolutionsPage />} />
-        <Route path="/results/:testId" element={<ResultsPage />} />
+      <Route path="/instructions" element={<ProtectedRoute><Instructions showStartButton={true} /> </ProtectedRoute>} />
+      <Route path="/mock-test" element={<ProtectedRoute><ExamPage />  </ProtectedRoute>} />
+      <Route path="/solutions" element={<ProtectedRoute><SolutionsPage /></ProtectedRoute>} />
+      <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
         <Route path="/buy/:courseId" element={<BuyNow />} />
       </Routes>
 

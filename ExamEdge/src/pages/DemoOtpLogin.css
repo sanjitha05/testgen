@@ -8,7 +8,6 @@
   background: var(--soft-bg);
   padding: 20px;
   position: relative;
-  overflow: hidden;
 }
 
 .otp-page::before {

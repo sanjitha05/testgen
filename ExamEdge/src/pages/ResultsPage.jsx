@@ -1,21 +1,34 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import ScoreStrip from "./ScoreStrip";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer
 } from "recharts";
 import "./ResultsPage.css";
+import useDisableBackButton from "../components/useDisableBackButton";
 import { m } from "framer-motion";
 
 
 export default function ResultsPage() {
-  const { testId } = useParams();
+  useDisableBackButton();
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Get testId from location.state or sessionStorage
+  const [testId] = useState(() => {
+    const stateTestId = location.state?.testId;
+    if (stateTestId) {
+      sessionStorage.setItem("testId", stateTestId);
+      return stateTestId;
+    }
+    return sessionStorage.getItem("testId");
+  });
 
   // ==================== ALL STATE HOOKS FIRST ====================
   const [testData, setTestData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const ITEMS_PER_PAGE = 8;
+const [currentPage, setCurrentPage] = useState(1);
+
 
   // ==================== EFFECTS ====================
   useEffect(() => {
@@ -32,7 +45,7 @@ export default function ResultsPage() {
   }, [testId]);
 
   // ==================== ALL MEMOIZED CALCULATIONS (MUST BE BEFORE RETURNS) ====================
-  const data = location.state ?? JSON.parse(localStorage.getItem(`results_${testId}`) || "null");
+  const data = location.state ?? JSON.parse(sessionStorage.getItem(`results_${testId}`) || "null");
   const resultData = data?.resultData || [];
   const responses = data?.responses || {};
 
@@ -391,7 +404,12 @@ const question = allQuestions.find(
   }, [resultData, testData]);
 
 
-    // ==================== TOPPER DATA (TEMP / MOCK) ====================
+    const filteredQuestions = useMemo(
+  () => resultData.filter(q => q.question_id),
+  [resultData]
+);
+
+  // ==================== TOPPER DATA (TEMP / MOCK) ====================
    const [topperResults, setTopperResults] = useState([]);
    useEffect(() => {
   //  TEMP MOCK – later replace with API
@@ -434,6 +452,11 @@ const question = allQuestions.find(
 
   setTopperResults(mockToppers);
 }, []);
+
+useEffect(() => {
+  setCurrentPage(1);
+}, [filteredQuestions.length]);
+
 
 const topperAverage = useMemo(() => {
   if (!topperResults.length) return null;
@@ -594,9 +617,9 @@ const subjectWiseTimeCharts = useMemo(() => {
 
         data.push({
           name:
-            sectionCount === 1
-              ? `Q${qIdx + 1}`
-              : `${section.SectionName}-Q${qIdx + 1}`,
+  sectionCount === 1
+    ? `Q${qIdx + 1}`
+    : `${section.SectionName.split("-").pop()}-Q${qIdx + 1}`,          
           time: +minutes.toFixed(2),
           section: section.SectionName
         });
@@ -610,30 +633,6 @@ const subjectWiseTimeCharts = useMemo(() => {
     };
   });
 }, [testData, resultData, flattenedQuestionsMap, timesInMs]);
-
-
-  // const subjectWiseTimeCharts = useMemo(() => {
-  //   if (!testData || !resultData.length) return [];
-
-  //   return testData.map((subject, sIdx) => {
-  //     const sections = subject.sections.map((section, secIdx) => ({
-  //       sectionName: section.SectionName,
-  //       data: resultData
-  //         .filter(
-  //           q => q.subjectIndex === sIdx && q.sectionIndex === secIdx
-  //         )
-  //         .map((q, i) => ({
-  //           name: `Q${i + 1}`,
-  //           time: +((timesInMs ? q.timeTaken / (1000 * 60) : q.timeTaken / 60).toFixed(2))
-  //         }))
-  //     }));
-
-  //     return {
-  //       subjectName: subject.SubjectName,
-  //       sections
-  //     };
-  //   });
-  // }, [resultData, testData, timesInMs]);
 
   // Subject-wise datasets for the three summary charts
   const subjectMetrics = useMemo(() => {
@@ -724,6 +723,20 @@ const attemptAnalysis = useMemo(() => {
   ];
 }, [resultData, testData, flattenedQuestionsMap, timesInMs]);
 
+const paginatedQuestions = useMemo(() => {
+  const start = (currentPage - 1) * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  return filteredQuestions.slice(start, end);
+}, [filteredQuestions, currentPage]);
+
+const totalPages = Math.max(
+  1,
+  Math.ceil(filteredQuestions.length / ITEMS_PER_PAGE)
+);
+
+
+
+
 
 
   // ==================== CONDITIONAL RETURNS (AFTER ALL HOOKS) ====================
@@ -771,28 +784,6 @@ const overallMarks = subjectAnalysis.reduce(
   0
 );
 
-// Build score strip data
-const scoreStripData = [
-  {
-    label: "OVERALL",
-    score: overallMarks,
-    total: OVERALL_MAX_MARKS,
-    type: "overall",
-    icon: "✔✔",
-  },
-  ...subjectAnalysis.map(subj => ({
-    label: subj.subjectName.toUpperCase(),
-    score: subj.marks,
-    total: SUBJECT_MAX_MARKS,
-    type: subj.subjectName.toLowerCase(), // physics | chemistry | mathematics
-    icon:
-      subj.subjectName === "Physics"
-        ? "⚛"
-        : subj.subjectName === "Chemistry"
-        ? "🧪"
-        : "±",
-  })),
-];
 const showSectionColumn = testData.some(
   subject => subject.sections.length > 1
 );
@@ -808,15 +799,14 @@ const showSectionColumn = testData.some(
         <button
           className="view-solutions-btn"
           onClick={() =>
-            navigate(`/solutions/${testId}`, {
-              state: { resultData, responses }
+            navigate("/solutions", {
+              state: { testId, resultData, responses }
             })
           }
         >
           View Solutions
         </button>
       </div>
-      {/* {console.log(scoreStripData)} */}
 
       {/* SCORE SUMMARY */}
       <div className="score-summary">
@@ -946,7 +936,8 @@ const showSectionColumn = testData.some(
         <div className="metric-card">
           <h3>Subject-wise Questions Attempted</h3>
           <ResponsiveContainer width="100%" height={240}>
-            <BarChart data={subjectMetrics.attempted}>
+            <BarChart data={subjectMetrics.attempted}
+            margin={{top:50}}>
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip formatter={(value) => `${value} Qs`} />
@@ -959,7 +950,8 @@ const showSectionColumn = testData.some(
         <div className="metric-card">
           <h3>Subject-wise Accuracy</h3>
           <ResponsiveContainer width="100%" height={240}>
-            <BarChart data={subjectMetrics.accuracy}>
+            <BarChart data={subjectMetrics.accuracy}
+             margin={{top:50}}>
               <XAxis dataKey="name" />
               <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
               <Tooltip formatter={(value) => `${value}%`} />
@@ -976,12 +968,11 @@ const showSectionColumn = testData.some(
 
 
 
-          <h2>Test Performance</h2>
+          {/* <h2>Test Performance</h2>
         <p className="section-subtitle">
           This shows your overall as well as subject-wise scores.
-        </p>
+        </p> */}
 
-        <ScoreStrip data={scoreStripData} />
 
   <h2>Test Breakdown</h2>
   <p className="section-subtitle">
@@ -1055,23 +1046,22 @@ const showSectionColumn = testData.some(
               </div>
 
               {/* OVERALL */}
-              <div className="time-row overall">
-                <div className="time-subject">
-                  ✔✔ Overall
-                </div>
+            <div className="time-row overall">
+            <div className="time-subject">✔✔ Overall</div>
 
-                <div className="time-cell">
-                  {formatTime(summary.totalTime)}
-                </div>
+            <div className="time-cell" data-label="Time Spent">
+              {formatTime(summary.totalTime)}
+            </div>
 
-                <div className="time-cell">
-                  {summary.attempted} <span>/ {summary.total}</span>
-                </div>
+            <div className="time-cell" data-label="Attempted">
+              {summary.attempted} <span>/ {summary.total}</span>
+            </div>
 
-                <div className="time-cell">
-                  {summary.accuracy}%
-                </div>
-              </div>
+            <div className="time-cell" data-label="Accuracy">
+              {summary.accuracy}%
+            </div>
+          </div>
+
 
               {/* SUBJECTS */}
               {subjectAnalysis.map((subj, idx) => (
@@ -1082,15 +1072,15 @@ const showSectionColumn = testData.some(
                     {subj.subjectName}
                   </div>
 
-                  <div className="time-cell">
+                  <div className="time-cell" data-label="Time Spent">
                     {formatTime(subj.timeSpent)}
                   </div>
 
-                  <div className="time-cell">
+                  <div className="time-cell" data-label="Attempted">
                     {subj.attempted} <span>/ {subj.total}</span>
                   </div>
 
-                  <div className="time-cell">
+                  <div className="time-cell" data-label="Accuracy">
                     {subj.accuracy}%
                   </div>
                 </div>
@@ -1099,41 +1089,6 @@ const showSectionColumn = testData.some(
 
       </div>
 
-
-      {/* <h2>Time Spent per Question (Subject & Section-wise)</h2>
-
-      {subjectWiseTimeCharts.map((subject, sIdx) => (
-        <div key={sIdx} className="subject-chart-wrapper">
-          <h2 className="subject-title">{subject.subjectName}</h2>
-
-          <div className="section-charts">
-            {subject.sections.map((section, secIdx) => (
-              <div key={secIdx} className="section-chart-card">
-                <h4>{section.sectionName}</h4>
-
-                <ResponsiveContainer width="100%" height={240}>
-                  <BarChart data={section.data}>
-                    <XAxis dataKey="name" />
-                    <YAxis label={{ value: "Time (min)", angle: -90, position: "insideLeft" }} />
-                    <Tooltip formatter={(value) => `${(+value).toFixed(1)} min`} />
-                    <Bar
-                      dataKey="time"
-                      fill={secIdx === 0 ? "#2563EB" : "#F97316"}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-
-                <p className="section-label">
-                  {secIdx === 0
-                    ? "Section A (Q1–20)"
-                    : "Section B (Q1–5)"}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))} */}
-
       <h2>Time Spent per Question (Subject-wise)</h2>
 
 {subjectWiseTimeCharts.map((subject, sIdx) => (
@@ -1141,13 +1096,44 @@ const showSectionColumn = testData.some(
     <h2 className="subject-title">{subject.subjectName}</h2>
 
     <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={subject.data}>
-        <XAxis
+      <BarChart data={subject.data}
+      margin={{ bottom: 20 }}>
+        {/* <XAxis
           dataKey="name"
           interval={0}
           angle={-35}
           textAnchor="end"
-        />
+           
+        /> */}
+        <XAxis
+        dataKey="name"
+        interval={0}
+        tickFormatter={(value, index) => {
+         
+          const shouldCompress = subject.data.length > 8;
+           if (!shouldCompress) return value;
+          const getBucketSize = () => {
+            if (window.innerWidth < 480) return 5;
+            if (window.innerWidth < 768) return 4;
+            return 1; // no compression
+          };
+
+
+          const bucketSize = getBucketSize();
+          if(bucketSize===1){
+            return `Q${index+1}`;
+          }
+          if (index % bucketSize === 0) {
+            const start = index + 1;
+            const end = Math.min(start + bucketSize - 1, subject.data.length);
+            return `Q${start}-${end}`;
+          }
+          return "";
+        }}
+      />
+     
+
+
         <YAxis
           label={{
             value: "Time (minutes)",
@@ -1289,7 +1275,8 @@ const showSectionColumn = testData.some(
           Biggest subject gap:{" "}
           <b>
             {
-              subjectComparisonData.sort(
+              
+              [...subjectComparisonData].sort(
                 (a, b) => (b.Toppers - b.You) - (a.Toppers - a.You)
               )[0]?.subject
             }
@@ -1304,7 +1291,7 @@ const showSectionColumn = testData.some(
     </div>
   </>
 )}
-
+<div className="attempt-analysis">
 <h2>Attempt Analysis</h2>
 <p className="section-subtitle">
   Know how you're solving questions in your attempted test. Go through the definitions first.
@@ -1344,7 +1331,7 @@ const showSectionColumn = testData.some(
   </div>
 </div>
 
-
+<div className="table-scroll-wrapper">
 <div className="attempt-table">
   <div className="attempt-header">
     <span>SUBJECT</span>
@@ -1370,8 +1357,10 @@ const showSectionColumn = testData.some(
     </div>
   ))}
 </div>
+</div>
 
-
+<div className="table-scroll-wrapper">
+<div className="overall-table">
       {/* DETAILED QUESTION TABLE */}
       <h2>Question-wise Details</h2>
       <table className="analysis-table">
@@ -1392,7 +1381,7 @@ const showSectionColumn = testData.some(
           </tr>
         </thead>
         <tbody>
-          {resultData.filter(q => q.question_id).map((q, idx) => {
+          {paginatedQuestions.map((q, idx) => {
             const section =
             testData[q.subjectIndex].sections[q.sectionIndex];
 
@@ -1441,6 +1430,31 @@ const showSectionColumn = testData.some(
           })}
         </tbody>
       </table>
-    </div>
-  );
+      </div>
+
+
+      <div className="pagination-controls">
+  <button
+    disabled={currentPage === 1}
+    onClick={() => setCurrentPage(p => p - 1)}
+  >
+    ← Previous
+  </button>
+
+  <span>
+    Page {currentPage} of {totalPages}
+  </span>
+  <button
+  disabled={currentPage >= totalPages}
+  onClick={() => setCurrentPage(p => p + 1)}
+>
+  Next →
+</button>
+
+</div>
+</div>
+
+  </div>
+  </div>
+  )
 }

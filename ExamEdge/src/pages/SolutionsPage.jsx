@@ -1,13 +1,25 @@
 import { useState,useEffect } from "react";
 import { useLocation,useParams } from "react-router-dom";
+import { supabase } from "../supabaseClient";
 import "./SolutionsPage.css";
 
 export default function SolutionsPage() {
-  
-  const { testId } = useParams();
   const location = useLocation();
-   const [testData, setTestData] = useState(null);
+
+  // Get testId from location.state or sessionStorage
+  const [testId] = useState(() => {
+    const stateTestId = location.state?.testId;
+    if (stateTestId) {
+      sessionStorage.setItem("testId", stateTestId);
+      return stateTestId;
+    }
+    return sessionStorage.getItem("testId");
+  });
+
+  const [testData, setTestData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [candidateName, setCandidateName] = useState("");
+
 
    useEffect(() => {
      if (!testId) return;
@@ -25,10 +37,30 @@ export default function SolutionsPage() {
         setLoading(false);
        });
    }, [testId]);
+useEffect(() => {
+  if (!testId) return;
+
+  const loadCandidate = async () => {
+    const { data, error } = await supabase
+      .from("test_attempts")
+      .select("name")
+      .eq("test_id", testId)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single();
+
+    if (!error && data) {
+      setCandidateName(data.name);
+    }
+  };
+
+  loadCandidate();
+}, [testId]);
+
 
    const data =
      location.state ??
-     JSON.parse(localStorage.getItem(`results_${testId}`) || "null");
+     JSON.parse(sessionStorage.getItem(`results_${testId}`) || "null");
 
    if (!data && !loading)
      return <p>No solutions available for this test.</p>;
@@ -193,15 +225,6 @@ const getStatus = (q, sectionIndex) => {
     }
   };
 
-  
-  // const data = location.state ?? JSON.parse(localStorage.getItem(`results_${testId}`) || "null");
-  // if (!data) return <p>No solutions available for this test.</p>;
-
-  // const { resultData, responses } = data;
-
-  // ---------- NORMALIZE QID ----------
- 
-
   return (
     <div className="solutions-page">
       <header className="top-bar">
@@ -211,12 +234,15 @@ const getStatus = (q, sectionIndex) => {
         <div className="top-bar-right">
           <div className="candidate-info">
             <div className="candidate-details">
-              <span className="candidate-name">CANDIDATE NAME</span>
+                <div className="candidate-name"> Candidate : 
+              👤 {candidateName}
+                </div>
+
               <span className="subject-name">Subject: {subject.SubjectName}</span>
             </div>
-            <div className="candidate-photo">
+            {/* <div className="candidate-photo">
               👤
-            </div>
+            </div> */}
           </div>
         </div>
       </header>
@@ -242,22 +268,25 @@ const getStatus = (q, sectionIndex) => {
             </div>
           </div>
 
-          <div className="section-nav-info">
-            <div className="section-tabs">
-              {subject.sections.map((sec, i) => (
-                <button
-                  key={i}
-                  className={`section-tab-btn ${i === activeSectionIndex ? "active" : ""}`}
-                  onClick={() => {
-                    setActiveSectionIndex(i);
-                    setActiveQuestionIndex(0);
-                  }}
-                >
-                  {sec.SectionName}
-                </button>
-              ))}
-            </div>
-          </div>
+        {subject.sections.length > 1 && (
+  <div className="section-nav-info">
+    <div className="section-tabs">
+      {subject.sections.map((sec, i) => (
+        <button
+          key={i}
+          className={`section-tab-btn ${i === activeSectionIndex ? "active" : ""}`}
+          onClick={() => {
+            setActiveSectionIndex(i);
+            setActiveQuestionIndex(0);
+          }}
+        >
+          {sec.SectionName}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
+
 
           <div className="question-container">
             <div className="question-header">
@@ -315,7 +344,6 @@ const getStatus = (q, sectionIndex) => {
 
               {/* SOLUTION SECTION */}
               <div className="solution-section">
-                <h4 className="solution-title">Step-by-Step Solution</h4>
                 <div className="answer-summary">
                   <div className="summary-item">
                     <span className="label">Your Answer:</span>
@@ -328,7 +356,7 @@ const getStatus = (q, sectionIndex) => {
                     <span className="value text-success">{formatAnswer(correctAnswer, question.qtype)}</span>
                   </div>
                 </div>
-
+                <h4 className="solution-title">Step-by-Step Solution</h4>
                 {question.solution && (
                   <div className="solution-image-container">
                     <img src={question.solution} alt="solution" className="solution-image" />

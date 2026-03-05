@@ -302,6 +302,29 @@
   object-fit: contain;
   opacity: 0.9;
 }
+
+.course-filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.course-search {
+  flex: 1;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #dbeafe;
+  font-size: 15px;
+}
+
+.course-type-filter {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #dbeafe;
+  font-size: 15px;
+  background: white;
+}
+
 /* COURSES GRID */
 .courses-grid {
   display: grid;
@@ -400,6 +423,12 @@ background: var(--primary);
 
 
 /* RESPONSIVE */
+@media (max-width: 1100px) {
+  .overview-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 900px) {
   .overview-section,
   .course-body,
@@ -409,5 +438,22 @@ background: var(--primary);
 
   .program-buttons {
     flex-direction: column;
+  }
+  
+  .exam-title-box h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .exam-details-page {
+    padding: 20px 10px;
+  }
+  .program-features {
+    padding: 20px;
+  }
+  .section-title {
+    font-size: 24px;
+    margin: 40px 0 20px;
   }
 }

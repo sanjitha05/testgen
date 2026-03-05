@@ -268,12 +268,6 @@
 .choice-label.actual { background: #337ab7; color: #fff; }
 
 /* SOLUTION SECTION */
-.solution-section {
-  margin-top: 40px;
-  padding-top: 30px;
-  border-top: 2px solid #eee;
-}
-
 .solution-title {
   font-size: 18px;
   font-weight: bold;
@@ -283,7 +277,7 @@
 
 .answer-summary {
   display: flex;
-  align-items: center;
+  justify-content: center;
   gap: 30px;
   margin-bottom: 30px;
   background: #f8f9fa;
@@ -537,15 +531,28 @@
 
 /* RESPONSIVENESS */
 @media (max-width: 992px) {
+  .solutions-page {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
   .solutions-body {
     flex-direction: column;
-    overflow-y: auto;
+    overflow: visible;
   }
   .solutions-content {
     border-right: none;
     border-bottom: 1px solid #ddd;
     flex: none;
     overflow: visible;
+  }
+  .question-container {
+    overflow: visible;
+    flex: none;
+  }
+  .question-scroll-area {
+    overflow: visible;
+    flex: none;
   }
   .right-column {
     width: 100% !important;
@@ -555,7 +562,29 @@
   .top-bar-right {
     display: none; /* Hide complex candidate info on mobile */
   }
+   .solutions-sidebar {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 20px;
+  }
+
+  .question-palette {
+    grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+  }
+
+  .palette-btn {
+    height: 34px;
+    font-size: 14px;
+  }
+
+  .palette-legend {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
 }
+
 
 @media (max-width: 768px) {
   .subject-tabs {
@@ -582,3 +611,32 @@
     width: 100%;
   }
 }
+@media (max-width: 600px) {
+  .palette-header {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .question-palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .palette-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  .palette-legend {
+    font-size: 13px;
+    gap: 12px;
+  }
+
+  .legend-item {
+    gap: 6px;
+  }
+}
+

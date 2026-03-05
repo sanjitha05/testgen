@@ -1,35 +1,38 @@
 import React, { useState, useEffect } from "react";
 import "./Instructions.css";
-import { useNavigate,useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import exams from "../data/exams.json"; 
 import streams from "../data/streams.json";
+import useDisableBackButton from "../components/useDisableBackButton";
 
 const Instructions = ({ showStartButton = true }) => {
   const navigate = useNavigate();
-  const { examId,streamId, testId } = useParams(); 
-  const [isFullscreen, setIsFullscreen] = useState(!!document.fullscreenElement);
+  useDisableBackButton();
+  const location = useLocation();
 
-  useEffect(() => {
-    const handleFsChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-    document.addEventListener("fullscreenchange", handleFsChange);
-    return () => document.removeEventListener("fullscreenchange", handleFsChange);
-  }, []);
-
-  const handleRequestFullscreen = () => {
-    try {
-      const docEl = document.documentElement;
-      if (docEl.requestFullscreen) {
-        docEl.requestFullscreen().catch(() => {
-          console.warn("Fullscreen request failed.");
-        });
+  // Get IDs from location.state or sessionStorage
+  const [ids, setIds] = useState(() => {
+    const stateIds = location.state || {};
+    if (stateIds.examId && stateIds.testId) {
+      // Save to sessionStorage if present in state
+      sessionStorage.setItem("examId", stateIds.examId);
+      sessionStorage.setItem("testId", stateIds.testId);
+      if (stateIds.streamId) {
+        sessionStorage.setItem("streamId", stateIds.streamId);
+      } else {
+        sessionStorage.removeItem("streamId");
       }
-    } catch (err) {
-      console.warn("Fullscreen not supported.");
+      return stateIds;
     }
-  };
+    // Fallback to sessionStorage
+    return {
+      examId: sessionStorage.getItem("examId"),
+      testId: sessionStorage.getItem("testId"),
+      streamId: sessionStorage.getItem("streamId"),
+    };
+  });
 
+  const { examId, streamId, testId } = ids;
   const exam = exams.find(e => e.id === examId) ;
   
   if (!exam) {
@@ -59,17 +62,6 @@ const Instructions = ({ showStartButton = true }) => {
 
   return (
     <div className="instructions-wrapper">
-      {!isFullscreen && (
-        <div className="fullscreen-warning-overlay">
-          <div className="warning-content">
-            <h3>Full-Screen Mode Required</h3>
-            <p>To maintain examination integrity, you must be in full-screen mode.</p>
-            <button className="return-fs-btn" onClick={handleRequestFullscreen}>
-              Return to Full-Screen
-            </button>
-          </div>
-        </div>
-      )}
       <div className="instructions-card">
   <h1 className="instructions-title">Please Read the Instructions Carefully</h1>
 
@@ -91,7 +83,7 @@ const Instructions = ({ showStartButton = true }) => {
               The Question Palette shows the status of each question using one of the following symbols (Not Visited / Not Answered / Answered / Marked). Use 'Mark for Review' if you wish to revisit a question later.
             </li>
 
-             <section className="instructions-section palette-legendd">
+             <div className="palette-legendd">
           <h3 className="section-subtitle">Question Palette Legend</h3>
           <div className="palette-item">
             <div className="palette-box not-visited">1</div>
@@ -99,7 +91,7 @@ const Instructions = ({ showStartButton = true }) => {
           </div>
           <div className="palette-item">
             <div className="palette-box not-answered">2</div>
-            <div>You have NOT answered the question.</div>
+            <div>You have visited the question and NOT answered the question.</div>
           </div>
           <div className="palette-item">
             <div className="palette-box answered">3</div>
@@ -113,15 +105,12 @@ const Instructions = ({ showStartButton = true }) => {
             <div className="palette-box marked-answered">5</div>
             <div><strong>You have answered the question and marked it for review.</strong> This will also be evaluated.</div>
           </div>
-        </section>
+        </div>
 
 
 
             <li>
               Calculators, mobile phones, or any other electronic devices are <strong>NOT permitted</strong>.
-            </li>
-            <li>
-              Rough work can be done on the provided virtual scratchpad.
             </li>
             <li>
               Once the test is submitted, answers <strong>cannot be changed</strong>.
@@ -135,14 +124,11 @@ const Instructions = ({ showStartButton = true }) => {
             <p>
             This mock test uses the official {exam.name} pattern.
           </p>
+          <p> Total marks for the paper: <strong>{pattern.marks ?? "Varies"}</strong>.</p>
           
           <p>
             {pattern.totalQuestions && <>Total questions: <strong>{pattern.totalQuestions}</strong>. </>}
            </p>
-           {/* <p> 
-            {pattern.marks && <>Total marks: <strong>{pattern.marks}</strong>. </>}
-          </p> */}
-
   {subjectsAreObjects ? (
             <>
               <h3 className="section-subtitle">Per-subject Breakdown</h3>
@@ -189,7 +175,7 @@ const Instructions = ({ showStartButton = true }) => {
           {subjectsAreObjects ? (
             <ul>
               <li>Refer to the per-subject table above for question type and marking.</li>
-              <li>Total marks for the paper: <strong>{pattern.marks ?? "Varies"}</strong>.</li>
+             
             </ul>
           ) : (
             <ul>
@@ -215,9 +201,6 @@ const Instructions = ({ showStartButton = true }) => {
               <strong> NOT permitted</strong>.
             </li>
             <li>
-              Rough work can be done on the provided virtual scratchpad.
-            </li>
-            <li>
               Once submitted, answers <strong>cannot be changed</strong>.
             </li>
           </ul>
@@ -229,10 +212,13 @@ const Instructions = ({ showStartButton = true }) => {
           <button
             className="start-test-btn"
             onClick={() => {
-              const testPath = testId 
-                ? `/mock-test/${examId}/${testId}` 
-                : `/mock-test/${examId}`;
-              navigate(testPath);
+              try {
+              document.documentElement.requestFullscreen?.();
+            } catch {}
+
+              navigate("/mock-test", {
+                state: { examId, streamId, testId }
+              });
             }}
           >
             Start Mock Test
